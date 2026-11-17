@@ -1,8 +1,15 @@
 # Hướng dẫn chạy
-Vào Terminal hoặc Command Prompt(cmd) (sau đây sẽ gọi chung là terminal), gõ 2 lệnh sau và ấn enter:
+Vào Terminal hoặc Command Prompt(cmd) (sau đây sẽ gọi chung là terminal), gõ lệnh sau và ấn enter:
 ```
 git clone https://github.com/nlycti1224/DoAn1_Nhom9_AIClothingConsultant.git
-cd DoAn1_Nhom9_AIClothingConsultant
+```
+Trỏ Terminal đến thư mục bạn lưu project bằng cách:
+```
+cd <đường dẫn của folder project>
+```
+Ví dụ:
+```
+cd C:\Users\shiina\AIClothingConsultant.Web
 ```
 Cài đặt .NET 9 SDK từ link sau (Vì project chạy trên .NET 9, bình thường mọi người sẽ dùng .NET 10):
 ```
@@ -20,7 +27,7 @@ Mở địa chỉ http://localhost:... hoặc https://localhost:... mà terminal
 ```
 https://ollama.com/download
 ```
-Cài đặt model mình đang dùng để chạy chatbot AI (gõ trong terminal):
+Cài đặt model tui đang dùng để chạy chatbot AI (gõ trong terminal):
 ```
 ollama pull qwen2.5:3b
 ```
