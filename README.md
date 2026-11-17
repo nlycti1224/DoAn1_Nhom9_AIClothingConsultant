@@ -1,4 +1,4 @@
-# Hướng dẫn chạy
+# Hướng dẫn chạy web
 Vào Terminal hoặc Command Prompt(cmd) (sau đây sẽ gọi chung là terminal), gõ lệnh sau và ấn enter:
 ```
 git clone https://github.com/nlycti1224/DoAn1_Nhom9_AIClothingConsultant.git
