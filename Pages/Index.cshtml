@@ -1,0 +1,187 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Velour — Thời Trang & Trợ Lý AI Stylist";
+}
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="nav-container">
+        <a class="brand-logo" onclick="filterCategory('All')">
+            ✦ VELOUR
+        </a>
+
+        <ul class="nav-links">
+            <li><a class="cat-link active" data-cat="All" onclick="filterCategory('All')">Tất cả</a></li>
+            <li><a class="cat-link" data-cat="New Arrivals" onclick="filterCategory('New Arrivals')">New Arrivals</a></li>
+            <li><a class="cat-link" data-cat="Women" onclick="filterCategory('Women')">Nữ</a></li>
+            <li><a class="cat-link" data-cat="Men" onclick="filterCategory('Men')">Nam</a></li>
+            <li><a class="cat-link" data-cat="Sale ♥" onclick="filterCategory('Sale ♥')">Sale ♥</a></li>
+        </ul>
+
+        <div class="nav-actions">
+            <div class="search-box">
+                <span>🔍</span>
+                <input type="text" id="navSearch" placeholder="Tìm quần áo, váy..." />
+            </div>
+
+            <div class="cart-btn-wrap" onclick="toggleCartDrawer()">
+                <span style="font-size: 1.25rem;">🛍️</span>
+                <span class="cart-badge" id="cartBadge">0</span>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO SECTION -->
+<div class="hero-section">
+    <div class="hero-circle-1"></div>
+    <div class="hero-content">
+        <div class="hero-tag">NEW SEASON DROP 2026</div>
+        <h1 class="hero-title">Dress the Way<br>You Feel Inside</h1>
+        <p class="hero-sub">Khám phá bộ sưu tập thời trang phong cách Korean, Mori, Gothic & Pastel với sự trợ giúp tư vấn từ Velour AI Stylist.</p>
+        <div class="hero-cta">
+            <button class="btn-primary-velour" onclick="filterCategory('All')">Shop Now →</button>
+            <button class="btn-secondary-velour" onclick="openChat()">✨ Hỏi Stylist AI</button>
+        </div>
+    </div>
+    <div class="hero-image-wrap">
+        <img src="/images/pastel_dress.jpg" alt="Velour Hero Fashion" />
+    </div>
+</div>
+
+<!-- CATEGORIES SECTION -->
+<div class="section-wrap">
+    <div class="section-head">
+        <h2 class="section-title">Shop by Style</h2>
+    </div>
+
+    <div class="categories-grid">
+        <div class="category-card" data-cat="Korean Soft" onclick="filterCategory('Korean Soft')">
+            <span class="cat-emoji">🌸</span>
+            <span class="cat-name">Korean Soft</span>
+        </div>
+        <div class="category-card" data-cat="Gothic Dark" onclick="filterCategory('Gothic Dark')">
+            <span class="cat-emoji">🖤</span>
+            <span class="cat-name">Gothic Dark</span>
+        </div>
+        <div class="category-card" data-cat="Mori Forest" onclick="filterCategory('Mori Forest')">
+            <span class="cat-emoji">🌿</span>
+            <span class="cat-name">Mori Forest</span>
+        </div>
+        <div class="category-card" data-cat="Pastel Dream" onclick="filterCategory('Pastel Dream')">
+            <span class="cat-emoji">✨</span>
+            <span class="cat-name">Pastel Dream</span>
+        </div>
+        <div class="category-card" data-cat="Lolita" onclick="filterCategory('Lolita')">
+            <span class="cat-emoji">🎀</span>
+            <span class="cat-name">Lolita Sweet</span>
+        </div>
+    </div>
+</div>
+
+<!-- PRODUCTS SECTION -->
+<div class="section-wrap">
+    <div class="section-head">
+        <h2 class="section-title" id="productSectionTitle">Tất cả sản phẩm</h2>
+        <a style="color: var(--accent); cursor: pointer; text-decoration: underline; font-weight: 500;" onclick="filterCategory('All')">Xem tất cả</a>
+    </div>
+
+    <div class="products-grid" id="productsGrid">
+        @foreach (var p in Model.Products)
+        {
+            <div class="product-card">
+                <div class="product-thumb" onclick="showProductModal(@p.Id)">
+                    <img src="@p.ImageUrl" alt="@p.Name" />
+                    <button class="wish-btn" onclick="event.stopPropagation(); toggleWishlist(@p.Id)">
+                        @(p.IsWishlisted ? "❤️" : "🤍")
+                    </button>
+                </div>
+                <div class="product-info">
+                    <div class="product-cat">@p.Category</div>
+                    <div class="product-name" onclick="showProductModal(@p.Id)">@p.Name</div>
+                    <div class="product-price">@p.FormattedPrice</div>
+                    <div class="product-actions">
+                        <button class="btn-add-cart" id="btn-cart-@p.Id" onclick="addToCart(@p.Id)">+ Thêm giỏ</button>
+                        <button class="btn-ask-ai" onclick="askAiAboutProduct(@p.Id)">💬 Stylist</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- PROMO BANNER -->
+<div class="promo-banner" onclick="copyPromoCode()">
+    <div class="promo-title">✨ Giảm 15% cho đơn hàng đầu tiên — Nhấn để sao chép mã: VELOUR15</div>
+    <div class="promo-sub">Áp dụng cho toàn bộ trang phục mới mùa hè. Hạn dùng 31/12.</div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+    <p>© 2026 Velour Fashion Web Store — Thiết kế bằng ASP.NET Core & Razor Pages | Tích hợp Ollama AI (qwen2.5:3b)</p>
+</footer>
+
+<!-- CART OVERLAY & DRAWER -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCartDrawer()"></div>
+<div class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+        <h3>🛍️ Giỏ hàng của bạn</h3>
+        <button class="btn-close-drawer" onclick="toggleCartDrawer()">✕</button>
+    </div>
+    <div class="cart-items-body" id="cartItemsList">
+        <!-- Rendered via JS -->
+    </div>
+    <div class="cart-footer">
+        <div class="cart-total-wrap">
+            <span>Tổng cộng:</span>
+            <span style="color: var(--accent);" id="cartTotalDisplay">0 ₫</span>
+        </div>
+        <button class="btn-checkout" onclick="checkoutOrder()">Thanh toán ngay</button>
+    </div>
+</div>
+
+<!-- AI CHAT POPUP & FLOATING BUBBLE -->
+<div class="chat-widget-wrap">
+    <div class="chat-popup" id="chatPopup">
+        <div class="chat-header">
+            <div class="bot-info">
+                <div class="bot-avatar">👗</div>
+                <div>
+                    <div class="bot-title">Velour AI Stylist</div>
+                    <div class="bot-status">● Đang hoạt động</div>
+                </div>
+            </div>
+            <div class="chat-ctrls">
+                <button class="chat-ctrl-btn" id="btnExpandChat" title="Phóng to" onclick="toggleExpandChat()">⤢</button>
+                <button class="chat-ctrl-btn" title="Đóng" onclick="toggleChat()">✕</button>
+            </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <div class="msg-row bot">
+                <div class="msg-bubble">
+                    Xin chào bạn! Mình là Velour AI Stylist 👗<br>
+                    Mình nắm rõ toàn bộ các mẫu quần áo đang bán tại cửa hàng và có thể tư vấn phối outfit, màu sắc, phong cách cho bạn. Hãy hỏi mình nhé!
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-typing" id="chatTyping">
+            ✦ Velour AI đang soạn câu trả lời...
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="Hỏi cách phối đồ, phong cách..." autocomplete="off" />
+            <button class="btn-send-chat" onclick="sendChatMessage()">▶</button>
+        </div>
+    </div>
+
+    <button class="chat-bubble-btn" onclick="toggleChat()" title="Trợ lý thời trang Velour AI">
+        👗
+    </button>
+</div>
+
+@section Scripts {
+    <script src="~/js/site.js" asp-append-version="true"></script>
+}
