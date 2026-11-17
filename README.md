@@ -9,7 +9,7 @@ cd <đường dẫn của folder project>
 ```
 Ví dụ:
 ```
-cd C:\Users\shiina\AIClothingConsultant.Web
+cd C:\Users\shiina\DoAn1_Nhom9_AIClothingConsultant
 ```
 Cài đặt .NET 9 SDK từ link sau (Vì project chạy trên .NET 9, bình thường mọi người sẽ dùng .NET 10):
 ```
