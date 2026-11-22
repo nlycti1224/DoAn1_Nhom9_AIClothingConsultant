@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace AIClothingConsultant.Web.Services
 {
@@ -20,7 +21,11 @@ namespace AIClothingConsultant.Web.Services
         private readonly int _numPredict;
         private readonly List<object> _messages = new();
 
-        public OllamaService(HttpClient httpClient, ProductService productService, IConfiguration configuration)
+        public OllamaService(
+            HttpClient httpClient,
+            ProductService productService,
+            IConfiguration configuration,
+            ILogger<OllamaService> logger)
         {
             _httpClient = httpClient;
             _productService = productService;
@@ -29,9 +34,49 @@ namespace AIClothingConsultant.Web.Services
             if (!baseUrl.EndsWith('/')) baseUrl += "/";
             _model = configuration["Ollama:Model"] ?? "qwen2.5:3b";
             int timeoutSeconds = int.TryParse(configuration["Ollama:TimeoutSeconds"], out int sec) && sec > 0 ? sec : 150;
-            _numThread = int.TryParse(configuration["Ollama:NumThread"], out int th) && th > 0 ? th : 3;
-            _numCtx = int.TryParse(configuration["Ollama:NumCtx"], out int ctx) && ctx >= 512 ? ctx : 1536;
-            _numPredict = int.TryParse(configuration["Ollama:NumPredict"], out int pred) && pred >= 64 ? pred : 150;
+
+            // Auto-detect hardware specs (CPU logical threads & total RAM) to self-tune performance
+            int logicalCores = Environment.ProcessorCount;
+            double totalRamGb = GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / (1024.0 * 1024.0 * 1024.0);
+
+            int autoThreads;
+            int autoCtx;
+            int autoPredict;
+            string profile;
+
+            if (logicalCores >= 12 && totalRamGb >= 12)
+            {
+                // High-spec demo machine (e.g. Core i7 8C/16T, 16GB+ RAM)
+                autoThreads = Math.Min(12, logicalCores - 2);
+                autoCtx = 3072;
+                autoPredict = 280;
+                profile = "High-Performance";
+            }
+            else if (logicalCores >= 6 && totalRamGb >= 10)
+            {
+                // Mid-range machine (6-8 threads, 12-16GB RAM)
+                autoThreads = Math.Max(4, logicalCores - 2);
+                autoCtx = 2048;
+                autoPredict = 220;
+                profile = "Balanced";
+            }
+            else
+            {
+                // Low-spec laptop (e.g. 2C/4T, 8GB RAM): keep 1 thread free so Windows/Alt+Tab stays smooth
+                autoThreads = Math.Max(2, logicalCores - 1);
+                autoCtx = 1536;
+                autoPredict = 150;
+                profile = "Eco-Smooth";
+            }
+
+            // Allow manual override via appsettings if explicitly configured
+            _numThread = int.TryParse(configuration["Ollama:NumThread"], out int th) && th > 0 ? th : autoThreads;
+            _numCtx = int.TryParse(configuration["Ollama:NumCtx"], out int ctx) && ctx >= 512 ? ctx : autoCtx;
+            _numPredict = int.TryParse(configuration["Ollama:NumPredict"], out int pred) && pred >= 64 ? pred : autoPredict;
+
+            logger.LogInformation(
+                "[Velour AI Auto-Tune] Profile={Profile} | Hardware: {Cores} threads, {Ram:F1} GB RAM -> num_thread={Threads}, num_ctx={Ctx}, num_predict={Predict}",
+                profile, logicalCores, totalRamGb, _numThread, _numCtx, _numPredict);
 
             _httpClient.BaseAddress = new Uri(baseUrl);
             _httpClient.Timeout = TimeSpan.FromSeconds(timeoutSeconds);
