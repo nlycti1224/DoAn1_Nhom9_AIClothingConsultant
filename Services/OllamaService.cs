@@ -15,6 +15,9 @@ namespace AIClothingConsultant.Web.Services
         private readonly HttpClient _httpClient;
         private readonly ProductService _productService;
         private readonly string _model;
+        private readonly int _numThread;
+        private readonly int _numCtx;
+        private readonly int _numPredict;
         private readonly List<object> _messages = new();
 
         public OllamaService(HttpClient httpClient, ProductService productService, IConfiguration configuration)
@@ -26,6 +29,9 @@ namespace AIClothingConsultant.Web.Services
             if (!baseUrl.EndsWith('/')) baseUrl += "/";
             _model = configuration["Ollama:Model"] ?? "qwen2.5:3b";
             int timeoutSeconds = int.TryParse(configuration["Ollama:TimeoutSeconds"], out int sec) && sec > 0 ? sec : 90;
+            _numThread = int.TryParse(configuration["Ollama:NumThread"], out int th) && th > 0 ? th : 2;
+            _numCtx = int.TryParse(configuration["Ollama:NumCtx"], out int ctx) && ctx >= 512 ? ctx : 2048;
+            _numPredict = int.TryParse(configuration["Ollama:NumPredict"], out int pred) && pred >= 64 ? pred : 220;
 
             _httpClient.BaseAddress = new Uri(baseUrl);
             _httpClient.Timeout = TimeSpan.FromSeconds(timeoutSeconds);
@@ -42,21 +48,20 @@ namespace AIClothingConsultant.Web.Services
             sb.AppendLine("DANH SÁCH SẢN PHẨM HIỆN CÓ CỦA CỬA HÀNG VELOUR:");
             foreach (var p in storeProducts)
             {
-                sb.AppendLine($"- [ID {p.Id}] {p.Name} ({p.Category}) - Giá: {p.FormattedPrice}. Chi tiết: {p.Description}. Ảnh: {p.ImageUrl}");
+                sb.AppendLine($"- [ID {p.Id}] {p.Name} ({p.Category}) - Giá: {p.FormattedPrice}. {p.Description}");
             }
 
             string systemPrompt = $"""
-            Bạn là Velour AI, stylist kiêm trợ lý tư vấn thời trang thông minh của cửa hàng thời trang VELOUR.
+            Bạn là Velour AI, stylist tư vấn thời trang của cửa hàng VELOUR.
 
             {sb}
 
             QUY TẮC TƯ VẤN:
-            - Tuyệt đối CHỈ trả lời bằng tiếng Việt lịch sự, thân thiện, duyên dáng và có chuyên môn về thời trang. KHÔNG sử dụng bất kỳ chữ Hán hay ký tự tiếng Trung nào.
-            - Khi tư vấn và gợi ý sản phẩm của shop, BẮT BUỘC dùng đúng cú pháp [IMG:ID] (ví dụ: [IMG:1], [IMG:2], không viết [ID 1] hay [Mã: 1]) ngay cạnh tên sản phẩm để hệ thống web tự động hiển thị thẻ card kèm ảnh thật của sản phẩm đó trong khung chat.
-              Ví dụ: "Bạn có thể phối mẫu Pastel Ruffle Dress [IMG:1] cùng Korean Knit Cardigan [IMG:2] rất thanh lịch và ngọt ngào!"
-            - Gợi ý phối đồ (mix & match): màu sắc, phụ kiện, chất liệu, dịp đi chơi/tiệc/dạo phố.
-            - Hướng dẫn người dùng bấm vào sản phẩm hoặc thêm vào giỏ hàng ngay trên web.
-            - Không bịa đặt giá hoặc sản phẩm sai lệch với danh sách trên.
+            - Tuyệt đối CHỈ trả lời bằng tiếng Việt lịch sự, thân thiện. KHÔNG dùng bất kỳ chữ Hán hay ký tự tiếng Trung nào.
+            - Trả lời súc tích, gọn gàng (khoảng 3-5 câu), đi thẳng vào gợi ý phối đồ và dịp mặc.
+            - Khi nhắc sản phẩm của shop, BẮT BUỘC gắn đúng cú pháp [IMG:ID] (ví dụ: [IMG:1], [IMG:2]; không viết [ID 1] hay [Mã: 1]) ngay cạnh tên sản phẩm.
+              Ví dụ: "Bạn có thể phối Pastel Ruffle Dress [IMG:1] cùng Korean Knit Cardigan [IMG:2] rất thanh lịch!"
+            - Không bịa đặt giá hoặc sản phẩm ngoài danh sách trên.
             """;
 
             _messages.Add(new
@@ -78,7 +83,15 @@ namespace AIClothingConsultant.Web.Services
             {
                 model = _model,
                 messages = _messages,
-                stream = false
+                stream = false,
+                keep_alive = "10m",
+                options = new
+                {
+                    num_thread = _numThread,
+                    num_ctx = _numCtx,
+                    num_predict = _numPredict,
+                    temperature = 0.6
+                }
             };
 
             string json = JsonSerializer.Serialize(request);
