@@ -1,4 +1,4 @@
-// VELOUR E-Commerce & AI Stylist State Management
+// VELOUR DESIGN — JM-Inspired Storefront & AI Stylist State Management
 
 let allProducts = [];
 let cart = [];
@@ -7,15 +7,16 @@ let isChatOpen = false;
 let isChatExpanded = false;
 let toastTimer = null;
 
-const SVG_HEART_OUTLINE = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5C12 20.5 4 15.2 4 9.5C4 6.8 6.1 4.8 8.6 4.8C10.2 4.8 11.4 5.7 12 6.8C12.6 5.7 13.8 4.8 15.4 4.8C17.9 4.8 20 6.8 20 9.5C20 15.2 12 20.5 12 20.5Z"/></svg>`;
-const SVG_HEART_FILLED = `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5C12 20.5 4 15.2 4 9.5C4 6.8 6.1 4.8 8.6 4.8C10.2 4.8 11.4 5.7 12 6.8C12.6 5.7 13.8 4.8 15.4 4.8C17.9 4.8 20 6.8 20 9.5C20 15.2 12 20.5 12 20.5Z"/></svg>`;
-const SVG_PLUS = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5V19M5 12H19"/></svg>`;
+const SVG_HEART_OUTLINE = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5C12 20.5 4 15.2 4 9.5C4 6.8 6.1 4.8 8.6 4.8C10.2 4.8 11.4 5.7 12 6.8C12.6 5.7 13.8 4.8 15.4 4.8C17.9 4.8 20 6.8 20 9.5C20 15.2 12 20.5 12 20.5Z"/></svg>`;
+const SVG_HEART_FILLED = `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5C12 20.5 4 15.2 4 9.5C4 6.8 6.1 4.8 8.6 4.8C10.2 4.8 11.4 5.7 12 6.8C12.6 5.7 13.8 4.8 15.4 4.8C17.9 4.8 20 6.8 20 9.5C20 15.2 12 20.5 12 20.5Z"/></svg>`;
+const SVG_PLUS = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5V19M5 12H19"/></svg>`;
 const SVG_SPARK = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L13.8 8.2L19 10L13.8 11.8L12 17L10.2 11.8L5 10L10.2 8.2L12 3Z"/></svg>`;
 
 document.addEventListener('DOMContentLoaded', async () => {
     await loadProducts();
     initEventListeners();
     updateCartUI();
+    updateWishlistBadge();
 });
 
 async function loadProducts() {
@@ -33,6 +34,12 @@ function initEventListeners() {
         searchInput.addEventListener('input', (e) => {
             renderFilteredProducts(e.target.value.trim().toLowerCase());
         });
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                triggerSearch();
+            }
+        });
     }
 
     const chatInput = document.getElementById('chatInput');
@@ -48,6 +55,12 @@ function initEventListeners() {
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeProductModal();
     });
+}
+
+function triggerSearch() {
+    const kw = (document.getElementById('navSearch')?.value || '').trim().toLowerCase();
+    renderFilteredProducts(kw);
+    scrollToProducts();
 }
 
 function showToast(msg) {
@@ -72,17 +85,16 @@ function filterCategory(category) {
         el.classList.toggle('active', el.dataset.cat === category);
     });
 
-    document.querySelectorAll('.category-card').forEach(el => {
+    document.querySelectorAll('.circle-cat-item').forEach(el => {
         el.classList.toggle('active', el.dataset.cat === category);
     });
 
-    const searchInput = document.getElementById('navSearch');
-    const kw = searchInput ? searchInput.value.trim().toLowerCase() : '';
+    const kw = (document.getElementById('navSearch')?.value || '').trim().toLowerCase();
     renderFilteredProducts(kw);
 
     const title = document.getElementById('productSectionTitle');
     if (title) {
-        title.innerText = (category === 'All') ? 'Tất cả sản phẩm' : category;
+        title.innerText = (category === 'All') ? 'SẢN PHẨM BÁN CHẠY' : category.toUpperCase();
     }
 
     if (category !== 'All') {
@@ -97,10 +109,12 @@ function renderFilteredProducts(keyword = '') {
     let filtered = allProducts;
 
     if (currentCategory !== 'All') {
-        if (currentCategory === 'Hàng mới') {
+        if (currentCategory === 'BST Mới') {
             filtered = filtered.slice(0, 4);
         } else if (currentCategory === 'Ưu đãi') {
             filtered = filtered.filter(p => p.price < 350000);
+        } else if (currentCategory === 'Yêu thích') {
+            filtered = filtered.filter(p => p.isWishlisted);
         } else {
             filtered = filtered.filter(p => p.category.toLowerCase() === currentCategory.toLowerCase());
         }
@@ -115,43 +129,46 @@ function renderFilteredProducts(keyword = '') {
     }
 
     const countEl = document.getElementById('productCountLabel');
-    if (countEl) countEl.textContent = `${filtered.length} sản phẩm`;
+    if (countEl) countEl.textContent = `${filtered.length} thiết kế`;
 
     if (filtered.length === 0) {
         grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 48px 16px; color: var(--ink-muted);">
-            Không tìm thấy sản phẩm nào phù hợp với từ khóa "${keyword}".
+            Không tìm thấy sản phẩm phù hợp${keyword ? ` với từ khóa "${keyword}"` : ''}.
         </div>`;
         return;
     }
 
     grid.innerHTML = filtered.map(p => {
-        const tagHtml = p.price < 350000
-            ? `<span class="product-tag tag-sale">GIÁ TỐT</span>`
-            : (p.id <= 4 ? `<span class="product-tag">MỚI</span>` : '');
+        const badgeText = p.price < 350000 ? '-15%' : (p.id <= 4 ? '-5%' : 'MỚI');
+        const badgeClass = badgeText === 'MỚI' ? 'jm-badge badge-new' : 'jm-badge badge-sale';
 
         return `
         <article class="product-card">
             <div class="product-thumb" onclick="showProductModal(${p.id})">
                 <img src="${p.imageUrl}" alt="${p.name}" loading="lazy" />
-                ${tagHtml}
-                <button class="wish-btn ${p.isWishlisted ? 'active' : ''}" onclick="event.stopPropagation(); toggleWishlist(${p.id})" aria-label="Yêu thích">
-                    ${p.isWishlisted ? SVG_HEART_FILLED : SVG_HEART_OUTLINE}
-                </button>
+                <span class="${badgeClass}">${badgeText}</span>
                 <div class="product-quick-bar" onclick="event.stopPropagation()">
                     <button class="btn-quick-cart" id="btn-cart-${p.id}" onclick="addToCart(${p.id})">
                         ${SVG_PLUS}
-                        <span>Thêm vào giỏ</span>
+                        <span>Thêm giỏ</span>
                     </button>
                     <button class="btn-quick-ai" onclick="askAiAboutProduct(${p.id})" title="Hỏi AI cách phối mẫu này">
                         ${SVG_SPARK}
-                        <span>Phối đồ</span>
+                        <span>Phối đồ AI</span>
                     </button>
                 </div>
             </div>
             <div class="product-info">
-                <div class="product-cat">${p.category}</div>
-                <h3 class="product-name" onclick="showProductModal(${p.id})">${p.name}</h3>
-                <div class="product-price">${p.formattedPrice}</div>
+                <div class="product-title-row">
+                    <h3 class="product-name" onclick="showProductModal(${p.id})" title="${p.name}">${p.name}</h3>
+                    <button class="wish-inline-btn ${p.isWishlisted ? 'active' : ''}" onclick="toggleWishlist(${p.id})" aria-label="Yêu thích">
+                        ${p.isWishlisted ? SVG_HEART_FILLED : SVG_HEART_OUTLINE}
+                    </button>
+                </div>
+                <div class="product-meta-row">
+                    <span class="product-price">${p.formattedPrice}</span>
+                    <span class="product-cat-pill">${p.category}</span>
+                </div>
             </div>
         </article>`;
     }).join('');
@@ -195,10 +212,17 @@ function selectSize(btn) {
 }
 
 // ══════════════ WISHLIST & PROMO ══════════════
+function updateWishlistBadge() {
+    const el = document.getElementById('wishBadge');
+    if (!el) return;
+    el.textContent = allProducts.filter(p => p.isWishlisted).length;
+}
+
 function toggleWishlist(productId) {
     const prod = allProducts.find(p => p.id === productId);
     if (!prod) return;
     prod.isWishlisted = !prod.isWishlisted;
+    updateWishlistBadge();
     const kw = (document.getElementById('navSearch')?.value || '').trim().toLowerCase();
     renderFilteredProducts(kw);
     showToast(prod.isWishlisted ? `Đã lưu "${prod.name}" vào yêu thích.` : `Đã bỏ yêu thích "${prod.name}".`);
@@ -266,7 +290,7 @@ function updateCartUI() {
 
     if (!list) return;
     if (cart.length === 0) {
-        list.innerHTML = `<div class="cart-empty">Giỏ hàng của bạn hiện đang trống.<br>Hãy khám phá bộ sưu tập mới của VELOUR.</div>`;
+        list.innerHTML = `<div class="cart-empty">Giỏ hàng của bạn hiện đang trống.<br>Hãy khám phá bộ sưu tập mới của VELOUR DESIGN.</div>`;
         return;
     }
 
@@ -437,7 +461,7 @@ function appendMessage(sender, text) {
                     <img src="${prod.imageUrl}" alt="${prod.name}" onclick="showProductModal(${prod.id})" />
                     <div style="flex-grow: 1;">
                         <div style="font-weight: 600; font-size: 0.82rem;">${prod.name}</div>
-                        <div style="color: var(--ink-muted); font-weight: 600; font-size: 0.78rem;">${prod.formattedPrice}</div>
+                        <div style="color: var(--accent-dark); font-weight: 600; font-size: 0.78rem;">${prod.formattedPrice}</div>
                     </div>
                     <button class="msg-card-btn" onclick="addToCart(${prod.id})">+ Giỏ</button>
                 </div>

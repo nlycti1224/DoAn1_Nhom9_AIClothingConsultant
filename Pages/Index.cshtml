@@ -1,288 +1,259 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "VELOUR — Thời Trang Thiết Kế & Trợ Lý Phối Đồ AI";
+    ViewData["Title"] = "VELOUR DESIGN — Thời Trang Thiết Kế & Trợ Lý Phối Đồ AI";
 }
 
-<!-- TOP ANNOUNCEMENT BAR -->
-<div class="announcement-bar">
-    <div class="announcement-inner">
-        <span>MIỄN PHÍ GIAO HÀNG ĐƠN TỪ 499.000₫</span>
-        <span class="ann-dot"></span>
-        <span class="ann-promo" onclick="copyPromoCode()">NHẬP MÃ <strong>VELOUR15</strong> GIẢM 15% ĐƠN ĐẦU TIÊN</span>
-        <span class="ann-dot"></span>
-        <span class="ann-ai" onclick="openChat()">TƯ VẤN PHỐI ĐỒ CÙNG VELOUR AI 24/7</span>
-    </div>
-</div>
-
-<!-- STICKY EDITORIAL HEADER (JM / UNIQLO STYLE) -->
+<!-- STICKY HEADER (JM.COM.VN STYLE + VELOUR PURPLE TONE) -->
 <header class="navbar">
     <div class="nav-container">
-        <a class="brand-logo" onclick="filterCategory('All')" aria-label="VELOUR Trang chủ">
-            <svg class="brand-mark" viewBox="0 0 28 28" width="22" height="22" fill="none" aria-hidden="true">
-                <rect x="2" y="2" width="24" height="24" stroke="currentColor" stroke-width="1.4"/>
-                <path d="M8.5 8.5L14 19.5L19.5 8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/>
-            </svg>
-            <span class="brand-wordmark">VELOUR</span>
+        <a class="brand-logo" onclick="filterCategory('All')" aria-label="VELOUR DESIGN Trang chủ">
+            <div class="brand-monogram">
+                <svg viewBox="0 0 42 26" width="38" height="24" fill="none" aria-hidden="true">
+                    <path d="M4 4L13 22L22 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M25 4V21H37" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="35" cy="7" r="2" fill="#9E5FC0"/>
+                </svg>
+                <span class="brand-sub">VELOUR DESIGN</span>
+            </div>
         </a>
 
         <nav class="nav-links" aria-label="Danh mục chính">
-            <a class="cat-link active" data-cat="All" onclick="filterCategory('All')">Tất cả</a>
-            <a class="cat-link" data-cat="Hàng mới" onclick="filterCategory('Hàng mới')">Hàng mới</a>
-            <a class="cat-link" data-cat="Váy đầm" onclick="filterCategory('Váy đầm')">Váy đầm</a>
-            <a class="cat-link" data-cat="Áo" onclick="filterCategory('Áo')">Áo</a>
-            <a class="cat-link" data-cat="Chân váy" onclick="filterCategory('Chân váy')">Chân váy</a>
-            <a class="cat-link" data-cat="Áo khoác" onclick="filterCategory('Áo khoác')">Áo khoác</a>
-            <a class="cat-link" data-cat="Quần" onclick="filterCategory('Quần')">Quần</a>
-            <a class="cat-link cat-sale" data-cat="Ưu đãi" onclick="filterCategory('Ưu đãi')">Ưu đãi</a>
+            <a class="cat-link active" data-cat="All" onclick="filterCategory('All')">
+                <span class="nav-micro-tag">SALE</span>
+                TRANG CHỦ
+            </a>
+            <a class="cat-link" data-cat="Đầm" onclick="filterCategory('Đầm')">ĐẦM</a>
+            <a class="cat-link" data-cat="Áo" onclick="filterCategory('Áo')">ÁO</a>
+            <a class="cat-link" data-cat="Quần" onclick="filterCategory('Quần')">QUẦN</a>
+            <a class="cat-link" data-cat="Chân váy" onclick="filterCategory('Chân váy')">CHÂN VÁY</a>
+            <a class="cat-link" data-cat="Áo khoác" onclick="filterCategory('Áo khoác')">ÁO KHOÁC</a>
+            <a class="cat-link" data-cat="BST Mới" onclick="filterCategory('BST Mới')">BST MỚI</a>
+            <a class="cat-link cat-sale" data-cat="Ưu đãi" onclick="filterCategory('Ưu đãi')">ƯU ĐÃI</a>
         </nav>
 
         <div class="nav-actions">
-            <div class="search-box">
-                <svg class="ui-ico" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="11" cy="11" r="7"/>
-                    <path d="M20 20L16.2 16.2"/>
+            <button class="nav-metric-btn" onclick="filterCategory('Yêu thích')" title="Sản phẩm yêu thích" aria-label="Yêu thích">
+                <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20.5C12 20.5 4 15.2 4 9.5C4 6.8 6.1 4.8 8.6 4.8C10.2 4.8 11.4 5.7 12 6.8C12.6 5.7 13.8 4.8 15.4 4.8C17.9 4.8 20 6.8 20 9.5C20 15.2 12 20.5 12 20.5Z"/>
                 </svg>
-                <input type="text" id="navSearch" placeholder="Tìm sản phẩm, chất liệu..." />
-            </div>
-
-            <button class="icon-action-btn" onclick="openChat()" title="Tư vấn phối đồ cùng AI" aria-label="Mở trợ lý phối đồ AI">
-                <svg class="ui-ico" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 3L13.8 8.2L19 10L13.8 11.8L12 17L10.2 11.8L5 10L10.2 8.2L12 3Z"/>
-                    <path d="M19 15L19.9 17.6L22.5 18.5L19.9 19.4L19 22L18.1 19.4L15.5 18.5L18.1 17.6L19 15Z"/>
-                </svg>
+                <span id="wishBadge">0</span>
             </button>
 
-            <button class="icon-action-btn cart-btn-wrap" onclick="toggleCartDrawer()" title="Giỏ hàng" aria-label="Mở giỏ hàng">
-                <svg class="ui-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <button class="nav-metric-btn" onclick="toggleCartDrawer()" title="Giỏ hàng" aria-label="Giỏ hàng">
+                <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M6 8H18L19.2 20H4.8L6 8Z"/>
                     <path d="M9 8V6.5C9 4.84 10.34 3.5 12 3.5C13.66 3.5 15 4.84 15 6.5V8"/>
                 </svg>
-                <span class="cart-badge" id="cartBadge">0</span>
+                <span id="cartBadge">0</span>
+            </button>
+
+            <button class="nav-metric-btn nav-ai-pill" onclick="openChat()" title="Trợ lý phối đồ AI" aria-label="Stylist AI">
+                <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3L13.8 8.2L19 10L13.8 11.8L12 17L10.2 11.8L5 10L10.2 8.2L12 3Z"/>
+                </svg>
+                <span>AI Stylist</span>
             </button>
         </div>
     </div>
 </header>
 
-<!-- EDITORIAL HERO LOOKBOOK -->
-<section class="hero-section">
-    <div class="hero-container">
-        <div class="hero-content">
-            <div class="hero-eyebrow">BỘ SƯU TẬP XUÂN — HÈ 2026</div>
-            <h1 class="hero-title">Thanh Lịch Trong<br>Từng Đường Nét</h1>
-            <p class="hero-sub">
-                Thiết kế hiện đại, dễ phối từ satin, cotton thêu, len dệt kim và vải đứng form cao cấp.
-                Trải nghiệm gợi ý phối đồ cá nhân hóa tức thì cùng <strong>Velour AI Stylist</strong>.
-            </p>
-            <div class="hero-cta">
-                <button class="btn-primary-velour" onclick="scrollToProducts()">
-                    <span>KHÁM PHÁ BỘ SƯU TẬP</span>
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+<!-- SUB-HEADER 3-COLUMN UTILITY STRIP (JM STYLE) -->
+<div class="info-strip">
+    <div class="info-strip-inner">
+        <div class="info-strip-item" onclick="scrollToProducts()">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9L5 4H19L21 9"/><path d="M4 9V20H20V9"/><path d="M9 20V14H15V20"/>
+            </svg>
+            <span>Hệ thống cửa hàng</span>
+        </div>
+        <div class="info-strip-item" onclick="copyPromoCode()">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 7H15V17H3V7Z"/><path d="M15 10H19L21 13V17H15V10Z"/><circle cx="7.5" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/>
+            </svg>
+            <span>Miễn phí vận chuyển đơn từ 499K</span>
+        </div>
+        <div class="info-strip-item" onclick="openChat()">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3L13.8 8.2L19 10L13.8 11.8L12 17L10.2 11.8L5 10L10.2 8.2L12 3Z"/>
+                <path d="M19 15L19.8 17.2L22 18L19.8 18.8L19 21L18.2 18.8L16 18L18.2 17.2L19 15Z"/>
+            </svg>
+            <span>Tư vấn phối đồ AI miễn phí 24/7</span>
+        </div>
+    </div>
+</div>
+
+<!-- FULL-WIDTH DREAMY HERO BANNER (JM STYLE + LAVENDER PURPLE) -->
+<section class="hero-banner">
+    <img class="hero-bg-img" src="/images/hero_banner.jpg" alt="Bộ sưu tập Giấc mơ dịu dàng - VELOUR DESIGN" />
+    <div class="hero-overlay-grad"></div>
+
+    <div class="hero-inner">
+        <div class="hero-copy">
+            <div class="hero-season">VELOUR DESIGN · XUÂN HÈ 2026</div>
+            <h1 class="hero-script-title">Giấc mơ dịu dàng</h1>
+            <p class="hero-lead">Bộ sưu tập thiết kế tông tím lavender thanh nhã cùng trợ lý AI Stylist gợi ý phối đồ theo dáng người.</p>
+            <div class="hero-btn-row">
+                <button class="btn-jm-pill" onclick="scrollToProducts()">
+                    <span>XEM THÊM</span>
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M5 12H19M13 6L19 12L13 18"/>
                     </svg>
                 </button>
-                <button class="btn-secondary-velour" onclick="openChat()">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <button class="btn-jm-ai" onclick="openChat()">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 3L13.8 8.2L19 10L13.8 11.8L12 17L10.2 11.8L5 10L10.2 8.2L12 3Z"/>
                     </svg>
-                    <span>TƯ VẤN PHỐI ĐỒ AI</span>
+                    <span>HỎI AI PHỐI ĐỒ</span>
                 </button>
             </div>
-            <div class="hero-metrics">
-                <div><strong>08+</strong><span>Thiết kế tuyển chọn</span></div>
-                <div><strong>24/7</strong><span>Stylist AI miễn phí</span></div>
-                <div><strong>14 ngày</strong><span>Đổi trả linh hoạt</span></div>
-            </div>
         </div>
+    </div>
 
-        <div class="hero-lookbook">
-            <div class="lookbook-main" onclick="showProductModal(1)">
-                <img src="/images/pastel_dress.jpg" alt="Đầm Dạ Hội Satin Đỏ Dáng Xòe" />
-                <div class="lookbook-caption">
-                    <span>NỔI BẬT</span>
-                    <strong>Đầm Dạ Hội Satin Đỏ Dáng Xòe · 420,000 ₫</strong>
-                </div>
-            </div>
-            <div class="lookbook-side">
-                <div class="lookbook-mini" onclick="showProductModal(2)">
-                    <img src="/images/korean_cardigan.jpg" alt="Áo Poncho Len Dệt Kim Tua Rua" />
-                    <div class="lookbook-mini-label">Áo Poncho Len Tua Rua</div>
-                </div>
-                <div class="lookbook-mini" onclick="showProductModal(5)">
-                    <img src="/images/gothic_dress.jpg" alt="Quần Ống Rộng Kẻ Sọc Đen Trắng" />
-                    <div class="lookbook-mini-label">Quần Ống Rộng Kẻ Sọc</div>
-                </div>
-            </div>
+    <!-- FLOATING SEARCH BAR AT BOTTOM OF HERO (JM SIGNATURE) -->
+    <div class="hero-search-wrap">
+        <div class="hero-search-bar">
+            <input type="text" id="navSearch" placeholder="Bạn muốn tìm sản phẩm gì ? (VD: đầm voan, cardigan, chân váy...)" />
+            <button class="hero-search-btn" onclick="triggerSearch()">Tìm kiếm ngay</button>
         </div>
     </div>
 </section>
 
-<!-- VISUAL CATEGORY LOOKBOOK STRIP (REPLACES EMOJI CARDS) -->
-<section class="section-wrap">
-    <div class="section-head">
-        <div>
-            <div class="section-kicker">DANH MỤC NỔI BẬT</div>
-            <h2 class="section-title">Chọn Theo Phong Cách & Trang Phục</h2>
-        </div>
-        <button class="link-quiet" onclick="filterCategory('All')">Xem toàn bộ danh mục</button>
-    </div>
+<!-- DASHED-CIRCLE GARMENT CATEGORY ICONS (JM SIGNATURE — 100% VECTOR SVG) -->
+<section class="circle-cats-section">
+    <div class="circle-cats-grid">
+        <button class="circle-cat-item" data-cat="Đầm" onclick="filterCategory('Đầm')">
+            <span class="circle-ring">
+                <svg viewBox="0 0 48 48" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 9L21 13H27L30 9L34 13L30 19L36 39H12L18 19L14 13L18 9Z"/>
+                    <path d="M18 19H30"/><path d="M24 19V39"/>
+                </svg>
+            </span>
+            <span class="circle-cat-label">ĐẦM</span>
+        </button>
 
-    <div class="categories-grid">
-        <div class="category-card" data-cat="Váy đầm" onclick="filterCategory('Váy đầm')">
-            <div class="cat-img-wrap"><img src="/images/pastel_dress.jpg" alt="Váy đầm thiết kế" /></div>
-            <div class="cat-meta">
-                <span class="cat-name">Váy Đầm Thiết Kế</span>
-                <span class="cat-count">3 mẫu</span>
-            </div>
-        </div>
-        <div class="category-card" data-cat="Áo khoác" onclick="filterCategory('Áo khoác')">
-            <div class="cat-img-wrap"><img src="/images/korean_cardigan.jpg" alt="Áo poncho len" /></div>
-            <div class="cat-meta">
-                <span class="cat-name">Áo Khoác & Poncho</span>
-                <span class="cat-count">1 mẫu</span>
-            </div>
-        </div>
-        <div class="category-card" data-cat="Chân váy" onclick="filterCategory('Chân váy')">
-            <div class="cat-img-wrap"><img src="/images/lace_skirt.jpg" alt="Chân váy xếp ly" /></div>
-            <div class="cat-meta">
-                <span class="cat-name">Chân Váy Xếp Ly</span>
-                <span class="cat-count">1 mẫu</span>
-            </div>
-        </div>
-        <div class="category-card" data-cat="Áo" onclick="filterCategory('Áo')">
-            <div class="cat-img-wrap"><img src="/images/puff_blouse.jpg" alt="Áo sơ mi nữ" /></div>
-            <div class="cat-meta">
-                <span class="cat-name">Áo Sơ Mi & Áo Kiểu</span>
-                <span class="cat-count">2 mẫu</span>
-            </div>
-        </div>
-        <div class="category-card" data-cat="Quần" onclick="filterCategory('Quần')">
-            <div class="cat-img-wrap"><img src="/images/gothic_dress.jpg" alt="Quần ống rộng" /></div>
-            <div class="cat-meta">
-                <span class="cat-name">Quần Ống Rộng</span>
-                <span class="cat-count">1 mẫu</span>
-            </div>
-        </div>
+        <button class="circle-cat-item" data-cat="Áo" onclick="filterCategory('Áo')">
+            <span class="circle-ring">
+                <svg viewBox="0 0 48 48" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 10L24 14L32 10L39 16L35 23L31 20V38H17V20L13 23L9 16L16 10Z"/>
+                    <path d="M24 14V38"/>
+                </svg>
+            </span>
+            <span class="circle-cat-label">ÁO</span>
+        </button>
+
+        <button class="circle-cat-item" data-cat="Quần" onclick="filterCategory('Quần')">
+            <span class="circle-ring">
+                <svg viewBox="0 0 48 48" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 10H33L35 39H26L24 22L22 39H13L15 10Z"/>
+                    <path d="M15 15H33"/>
+                </svg>
+            </span>
+            <span class="circle-cat-label">QUẦN</span>
+        </button>
+
+        <button class="circle-cat-item" data-cat="Chân váy" onclick="filterCategory('Chân váy')">
+            <span class="circle-ring">
+                <svg viewBox="0 0 48 48" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 12H32L37 37H11L16 12Z"/>
+                    <path d="M16 16H32"/><path d="M20 16L18 37"/><path d="M28 16L30 37"/>
+                </svg>
+            </span>
+            <span class="circle-cat-label">CHÂN VÁY</span>
+        </button>
+
+        <button class="circle-cat-item" data-cat="Áo khoác" onclick="filterCategory('Áo khoác')">
+            <span class="circle-ring">
+                <svg viewBox="0 0 48 48" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 10L24 17L32 10L39 17L36 38H12L9 17L16 10Z"/>
+                    <path d="M24 17V38"/><circle cx="21" cy="24" r="1"/><circle cx="21" cy="30" r="1"/>
+                </svg>
+            </span>
+            <span class="circle-cat-label">ÁO KHOÁC</span>
+        </button>
+
+        <button class="circle-cat-item" data-cat="Ưu đãi" onclick="filterCategory('Ưu đãi')">
+            <span class="circle-ring circle-ring-sale">
+                <svg viewBox="0 0 48 48" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 24L24 11H36V23L23 36L11 24Z"/>
+                    <circle cx="30" cy="17" r="2"/>
+                </svg>
+            </span>
+            <span class="circle-cat-label">ƯU ĐÃI</span>
+        </button>
     </div>
 </section>
 
-<!-- PRODUCTS CATALOG GRID (4 COLUMNS, 3:4 PORTRAIT RATIO) -->
+<!-- PRODUCTS SHOWCASE (JM CENTERED TITLE + 4-COL PORTRAIT STUDIO CARDS) -->
 <section class="section-wrap" id="productsSection">
-    <div class="section-head">
-        <div>
-            <div class="section-kicker">SẢN PHẨM</div>
-            <h2 class="section-title" id="productSectionTitle">Tất cả sản phẩm</h2>
-        </div>
-        <div class="catalog-tools">
-            <span class="product-count-label" id="productCountLabel">@Model.Products.Count sản phẩm</span>
-            <button class="link-quiet" onclick="filterCategory('All')">Hiển thị tất cả</button>
+    <div class="section-head-center">
+        <h2 class="section-title-center" id="productSectionTitle">SẢN PHẨM BÁN CHẠY</h2>
+        <div class="section-sub-row">
+            <span id="productCountLabel">@Model.Products.Count thiết kế</span>
+            <span>·</span>
+            <button class="link-quiet" onclick="filterCategory('All')">Xem tất cả</button>
         </div>
     </div>
 
     <div class="products-grid" id="productsGrid">
         @foreach (var p in Model.Products)
         {
+            var badgeText = p.Price < 350000 ? "-15%" : (p.Id <= 4 ? "-5%" : "MỚI");
+            var badgeClass = badgeText == "MỚI" ? "jm-badge badge-new" : "jm-badge badge-sale";
             <article class="product-card">
                 <div class="product-thumb" onclick="showProductModal(@p.Id)">
                     <img src="@p.ImageUrl" alt="@p.Name" loading="lazy" />
-                    @if (p.Price < 350000)
-                    {
-                        <span class="product-tag tag-sale">GIÁ TỐT</span>
-                    }
-                    else if (p.Id <= 4)
-                    {
-                        <span class="product-tag">MỚI</span>
-                    }
-
-                    <button class="wish-btn @(p.IsWishlisted ? "active" : "")" onclick="event.stopPropagation(); toggleWishlist(@p.Id)" aria-label="Yêu thích">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="@(p.IsWishlisted ? "currentColor" : "none")" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 20.5C12 20.5 4 15.2 4 9.5C4 6.8 6.1 4.8 8.6 4.8C10.2 4.8 11.4 5.7 12 6.8C12.6 5.7 13.8 4.8 15.4 4.8C17.9 4.8 20 6.8 20 9.5C20 15.2 12 20.5 12 20.5Z"/>
-                        </svg>
-                    </button>
+                    <span class="@badgeClass">@badgeText</span>
 
                     <div class="product-quick-bar" onclick="event.stopPropagation()">
                         <button class="btn-quick-cart" id="btn-cart-@p.Id" onclick="addToCart(@p.Id)">
-                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
                                 <path d="M12 5V19M5 12H19"/>
                             </svg>
-                            <span>Thêm vào giỏ</span>
+                            <span>Thêm giỏ</span>
                         </button>
                         <button class="btn-quick-ai" onclick="askAiAboutProduct(@p.Id)" title="Hỏi AI cách phối mẫu này">
                             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M12 3L13.8 8.2L19 10L13.8 11.8L12 17L10.2 11.8L5 10L10.2 8.2L12 3Z"/>
                             </svg>
-                            <span>Phối đồ</span>
+                            <span>Phối đồ AI</span>
                         </button>
                     </div>
                 </div>
 
                 <div class="product-info">
-                    <div class="product-cat">@p.Category</div>
-                    <h3 class="product-name" onclick="showProductModal(@p.Id)">@p.Name</h3>
-                    <div class="product-price">@p.FormattedPrice</div>
+                    <div class="product-title-row">
+                        <h3 class="product-name" onclick="showProductModal(@p.Id)" title="@p.Name">@p.Name</h3>
+                        <button class="wish-inline-btn @(p.IsWishlisted ? "active" : "")" onclick="toggleWishlist(@p.Id)" aria-label="Yêu thích">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="@(p.IsWishlisted ? "currentColor" : "none")" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 20.5C12 20.5 4 15.2 4 9.5C4 6.8 6.1 4.8 8.6 4.8C10.2 4.8 11.4 5.7 12 6.8C12.6 5.7 13.8 4.8 15.4 4.8C17.9 4.8 20 6.8 20 9.5C20 15.2 12 20.5 12 20.5Z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="product-meta-row">
+                        <span class="product-price">@p.FormattedPrice</span>
+                        <span class="product-cat-pill">@p.Category</span>
+                    </div>
                 </div>
             </article>
         }
     </div>
 </section>
 
-<!-- EDITORIAL PROMO BANNER -->
+<!-- PROMO BANNER -->
 <section class="section-wrap">
     <div class="promo-banner" onclick="copyPromoCode()">
         <div class="promo-left">
-            <span class="promo-kicker">ƯU ĐÃI THÀNH VIÊN MỚI</span>
-            <h3 class="promo-title">Giảm 15% cho đơn hàng đầu tiên tại VELOUR</h3>
-            <p class="promo-sub">Áp dụng cho toàn bộ thiết kế mới và dịch vụ tư vấn phối đồ cá nhân hóa.</p>
+            <span class="promo-kicker">ĐẶC QUYỀN THÀNH VIÊN VELOUR</span>
+            <h3 class="promo-title">Giảm ngay 15% cho đơn hàng đầu tiên</h3>
+            <p class="promo-sub">Áp dụng cho toàn bộ bộ sưu tập thiết kế mới và miễn phí tư vấn phối đồ cùng Velour AI Stylist.</p>
         </div>
         <div class="promo-right">
             <div class="promo-code-box">
                 <span>MÃ ƯU ĐÃI</span>
                 <strong>VELOUR15</strong>
             </div>
-            <span class="promo-hint">Nhấn để sao chép</span>
-        </div>
-    </div>
-</section>
-
-<!-- SERVICE VALUE BAR (VECTOR LINE-ART ICONS) -->
-<section class="value-strip">
-    <div class="value-grid">
-        <div class="value-item">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 7H15V17H3V7Z"/><path d="M15 10H19L21 13V17H15V10Z"/><circle cx="7.5" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/>
-            </svg>
-            <div>
-                <strong>Miễn phí vận chuyển</strong>
-                <span>Cho mọi đơn hàng từ 499.000₫</span>
-            </div>
-        </div>
-        <div class="value-item">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 12A8 8 0 0 1 18.5 7.5M20 12A8 8 0 0 1 5.5 16.5"/><path d="M18.5 3.5V7.5H14.5M5.5 20.5V16.5H9.5"/>
-            </svg>
-            <div>
-                <strong>Đổi trả trong 14 ngày</strong>
-                <span>Hỗ trợ đổi size nhanh chóng</span>
-            </div>
-        </div>
-        <div class="value-item">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 3L13.8 8.2L19 10L13.8 11.8L12 17L10.2 11.8L5 10L10.2 8.2L12 3Z"/>
-                <path d="M19 15L19.9 17.6L22.5 18.5L19.9 19.4L19 22L18.1 19.4L15.5 18.5L18.1 17.6L19 15Z"/>
-            </svg>
-            <div>
-                <strong>Stylist AI cá nhân hóa</strong>
-                <span>Tư vấn phối đồ theo dáng & dịp mặc</span>
-            </div>
-        </div>
-        <div class="value-item">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 3L19 6V11.5C19 16 15.8 19.8 12 21C8.2 19.8 5 16 5 11.5V6L12 3Z"/><path d="M9 12L11 14L15.5 9.5"/>
-            </svg>
-            <div>
-                <strong>Chất liệu tuyển chọn</strong>
-                <span>Satin, cotton, len dệt kim cao cấp</span>
-            </div>
+            <span class="promo-hint">Nhấn để sao chép mã</span>
         </div>
     </div>
 </section>
@@ -291,15 +262,15 @@
 <footer class="site-footer">
     <div class="footer-grid">
         <div>
-            <div class="footer-brand">VELOUR</div>
-            <p class="footer-desc">Thương hiệu thời trang thiết kế tối giản kết hợp trợ lý phối đồ AI chạy cục bộ bằng ASP.NET Core (.NET 9) và Ollama.</p>
+            <div class="footer-brand">VELOUR DESIGN</div>
+            <p class="footer-desc">Thương hiệu thời trang thiết kế thanh lịch kết hợp trợ lý phối đồ AI chạy cục bộ bằng ASP.NET Core (.NET 9) và Ollama.</p>
         </div>
         <div>
             <div class="footer-col-title">Danh mục</div>
-            <a onclick="filterCategory('Váy đầm')">Váy đầm thiết kế</a>
-            <a onclick="filterCategory('Áo')">Áo sơ mi & áo kiểu</a>
-            <a onclick="filterCategory('Chân váy')">Chân váy xếp ly</a>
-            <a onclick="filterCategory('Quần')">Quần ống rộng</a>
+            <a onclick="filterCategory('Đầm')">Đầm thiết kế</a>
+            <a onclick="filterCategory('Áo')">Áo kiểu nữ tính</a>
+            <a onclick="filterCategory('Chân váy')">Chân váy midi</a>
+            <a onclick="filterCategory('Áo khoác')">Áo khoác & Cardigan</a>
         </div>
         <div>
             <div class="footer-col-title">Hỗ trợ khách hàng</div>
@@ -314,7 +285,7 @@
         </div>
     </div>
     <div class="footer-bottom">
-        <span>© 2026 VELOUR Fashion Store. Thiết kế giao diện tối giản chuẩn thương hiệu.</span>
+        <span>© 2026 VELOUR DESIGN. Thời trang thiết kế & Trợ lý phối đồ AI.</span>
     </div>
 </footer>
 
@@ -379,7 +350,7 @@
     </div>
 </aside>
 
-<!-- AI STYLIST CHAT WIDGET (VECTOR GRAPHICS ONLY) -->
+<!-- AI STYLIST CHAT WIDGET -->
 <div class="chat-widget-wrap">
     <div class="chat-popup" id="chatPopup">
         <div class="chat-header">
@@ -418,7 +389,7 @@
             <div class="msg-row bot">
                 <div class="msg-bubble">
                     Xin chào bạn! Mình là <strong>Velour AI Stylist</strong>.<br>
-                    Hãy cho mình biết dịp mặc, phong cách hoặc mức giá mong muốn — mình sẽ gợi ý mẫu trang phục và cách phối phù hợp nhất từ cửa hàng.
+                    Hãy cho mình biết dịp mặc, phong cách hoặc mức giá mong muốn — mình sẽ gợi ý mẫu trang phục và cách phối phù hợp nhất từ bộ sưu tập của VELOUR nhé!
                 </div>
             </div>
         </div>
@@ -438,7 +409,7 @@
     </div>
 
     <button class="chat-bubble-btn" onclick="toggleChat()" title="Trợ lý phối đồ Velour AI" aria-label="Mở trợ lý phối đồ AI">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 3L13.8 8.2L19 10L13.8 11.8L12 17L10.2 11.8L5 10L10.2 8.2L12 3Z"/>
             <path d="M19 15L19.8 17.2L22 18L19.8 18.8L19 21L18.2 18.8L16 18L18.2 17.2L19 15Z"/>
         </svg>
@@ -452,4 +423,3 @@
 @section Scripts {
     <script src="~/js/site.js" asp-append-version="true"></script>
 }
-

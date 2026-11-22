@@ -60,7 +60,7 @@ namespace AIClothingConsultant.Web.Services
             - Tuyệt đối CHỈ trả lời bằng tiếng Việt lịch sự, thân thiện. KHÔNG dùng bất kỳ chữ Hán hay ký tự tiếng Trung nào.
             - Trả lời súc tích, gọn gàng (khoảng 3-5 câu), đi thẳng vào gợi ý phối đồ và dịp mặc.
             - Khi nhắc sản phẩm của shop, BẮT BUỘC gắn đúng cú pháp [IMG:ID] (ví dụ: [IMG:1], [IMG:2]; không viết [ID 1] hay [Mã: 1]) ngay cạnh tên sản phẩm.
-              Ví dụ: "Bạn có thể phối Đầm Dạ Hội Satin Đỏ Dáng Xòe [IMG:1] cùng Áo Poncho Len Dệt Kim Tua Rua [IMG:2] rất thanh lịch!"
+              Ví dụ: "Bạn có thể phối Đầm Voan Tơ Xếp Bèo Tím Pastel [IMG:1] cùng Áo Cardigan Len Dệt Kim Cúc Ngọc Trai [IMG:2] rất thanh lịch!"
             - Không bịa đặt giá hoặc sản phẩm ngoài danh sách trên.
             """;
 

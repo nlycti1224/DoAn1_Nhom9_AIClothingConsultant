@@ -20,90 +20,90 @@ namespace AIClothingConsultant.Web.Services
                 new Product
                 {
                     Id = 1,
-                    Name = "Đầm Dạ Hội Satin Đỏ Dáng Xòe",
-                    Category = "Váy đầm",
+                    Name = "Đầm Voan Tơ Xếp Bèo Tím Pastel",
+                    Category = "Đầm",
                     Price = 420000,
-                    ThumbColor = "#F3EAFB",
+                    ThumbColor = "#F5EEFC",
                     Icon = "",
-                    ImageFileName = "pastel_dress.jpg",
-                    Description = "Đầm satin đỏ cổ yếm dáng xòe rộng, chân váy bồng bềnh bay bổng khi chuyển động, phù hợp dự tiệc, dạ hội và chụp ảnh kỷ yếu."
+                    ImageFileName = "prod_1.jpg",
+                    Description = "Đầm voan tơ xếp bèo tầng tông tím lavender pastel dịu dàng, đính nơ nhỏ tinh tế, tôn dáng thanh thoát cho buổi dạo phố và tiệc nhẹ."
                 },
                 new Product
                 {
                     Id = 2,
-                    Name = "Áo Poncho Len Dệt Kim Tua Rua",
+                    Name = "Áo Cardigan Len Dệt Kim Cúc Ngọc Trai",
                     Category = "Áo khoác",
                     Price = 350000,
-                    ThumbColor = "#F4F1EC",
+                    ThumbColor = "#F7F1FC",
                     Icon = "",
-                    ImageFileName = "korean_cardigan.jpg",
-                    Description = "Áo poncho len dệt kim lưới màu kem cổ chữ V, viền tua rua mềm mại phong cách bohemian, dễ khoác ngoài áo thun hoặc đầm mùa se lạnh."
+                    ImageFileName = "prod_2.jpg",
+                    Description = "Áo cardigan len dệt kim mềm mịn dáng lửng, hàng cúc ngọc trai phong cách Hàn Quốc, dễ khoác ngoài váy liền hoặc chân váy xếp ly."
                 },
                 new Product
                 {
                     Id = 3,
-                    Name = "Chân Váy Xếp Ly Đen Đính Nơ Eo",
+                    Name = "Chân Váy Midi Xếp Ly Phối Ren",
                     Category = "Chân váy",
                     Price = 290000,
-                    ThumbColor = "#F3F2EF",
+                    ThumbColor = "#F4EEF9",
                     Icon = "",
-                    ImageFileName = "lace_skirt.jpg",
-                    Description = "Chân váy chữ A xếp ly màu đen cạp cao đính nơ ở eo, dáng xòe nhẹ tôn đôi chân, dễ phối cùng áo sơ mi kẻ sọc hoặc áo thun đi làm, đi học."
+                    ImageFileName = "prod_3.jpg",
+                    Description = "Chân váy midi cạp cao xếp ly mềm rủ phối viền ren tinh xảo, tôn vòng eo và dễ phối cùng áo sơ mi lụa hoặc cardigan."
                 },
                 new Product
                 {
                     Id = 4,
-                    Name = "Áo Sơ Mi Trắng Thêu Hoa Buộc Vạt",
+                    Name = "Áo Kiểu Cổ Vuông Tay Bồng Thêu Hoa",
                     Category = "Áo",
                     Price = 260000,
-                    ThumbColor = "#F7F4EE",
+                    ThumbColor = "#FAF4FF",
                     Icon = "",
-                    ImageFileName = "puff_blouse.jpg",
-                    Description = "Áo sơ mi trắng cộc tay thêu hoa nhí tinh tế, có thể buộc vạt tạo kiểu croptop, chất vải mềm thoáng, hợp phối cùng quần jeans và chân váy."
+                    ImageFileName = "prod_4.jpg",
+                    Description = "Áo kiểu nữ cổ vuông tay bồng thêu hoa nhí thanh lịch, chất cotton thoáng mát, phù hợp đi làm, đi học và hẹn hò cuối tuần."
                 },
                 new Product
                 {
                     Id = 5,
-                    Name = "Quần Ống Rộng Kẻ Sọc Đen Trắng",
-                    Category = "Quần",
+                    Name = "Đầm Nhung Tím Than Dự Tiệc Cổ Điển",
+                    Category = "Đầm",
                     Price = 520000,
-                    ThumbColor = "#ECEAE8",
+                    ThumbColor = "#EFE7F7",
                     Icon = "",
-                    ImageFileName = "gothic_dress.jpg",
-                    Description = "Quần ống suông rộng cạp cao kẻ sọc đen trắng, chất vải đứng form, kéo dài chân, hợp phối cùng áo trễ vai hoặc áo thun trắng cho set đồ cá tính."
+                    ImageFileName = "prod_5.jpg",
+                    Description = "Đầm nhung tím than cao cấp cổ tim viền ren nhẹ, phom ôm eo tôn dáng sang trọng và quý phái cho các buổi tiệc tối."
                 },
                 new Product
                 {
                     Id = 6,
-                    Name = "Đầm Trắng Trễ Vai Bèo Nhún",
-                    Category = "Váy đầm",
+                    Name = "Đầm Linen Kem Cổ Yếm Dáng Suông",
+                    Category = "Đầm",
                     Price = 390000,
-                    ThumbColor = "#F0F2ED",
+                    ThumbColor = "#F6F1FA",
                     Icon = "",
-                    ImageFileName = "mori_dress.jpg",
-                    Description = "Đầm trắng trễ vai viền bèo nhún thêu ren, eo chun co giãn thoải mái, phong cách nữ tính trong trẻo, hợp đi biển và dạo phố mùa hè."
+                    ImageFileName = "prod_6.jpg",
+                    Description = "Đầm linen màu kem nhã nhặn thiết kế cổ yếm thanh thoát, chất vải tự nhiên mát nhẹ, lý tưởng cho mùa hè và du lịch."
                 },
                 new Product
                 {
                     Id = 7,
-                    Name = "Đầm Hoa Đỏ Cổ Chữ V Kèm Thắt Lưng",
-                    Category = "Váy đầm",
-                    Price = 680000,
-                    ThumbColor = "#F7EFF2",
+                    Name = "Quần Ống Suông Cạp Cao Thanh Lịch",
+                    Category = "Quần",
+                    Price = 340000,
+                    ThumbColor = "#F3ECF8",
                     Icon = "",
-                    ImageFileName = "lolita_dress.jpg",
-                    Description = "Đầm đỏ họa tiết hoa thêu cổ chữ V, tay cánh dơi, đi kèm thắt lưng đan cói nhấn eo, chân váy xòe duyên dáng phong cách retro."
+                    ImageFileName = "prod_7.jpg",
+                    Description = "Quần tây ống suông cạp cao tông tím khói trầm sang trọng, chất vải đứng phom ít nhăn giúp kéo dài đôi chân hiệu quả."
                 },
                 new Product
                 {
                     Id = 8,
-                    Name = "Áo Sơ Mi Chambray Xanh Họa Tiết Tim",
-                    Category = "Áo",
-                    Price = 320000,
-                    ThumbColor = "#EFF1F3",
+                    Name = "Áo Khoác Tweed Tím Nhạt Dáng Ngắn",
+                    Category = "Áo khoác",
+                    Price = 580000,
+                    ThumbColor = "#F5EEFB",
                     Icon = "",
-                    ImageFileName = "linen_shirt.jpg",
-                    Description = "Áo sơ mi chambray xanh denim nhạt tay lỡ, in họa tiết trái tim nhỏ xinh, có túi ngực, chất cotton mềm mát dễ mặc hằng ngày."
+                    ImageFileName = "prod_8.jpg",
+                    Description = "Áo khoác dạ tweed cổ tròn dáng ngắn phối cúc ngọc trai sang chảnh, tông tím pastel ngọt ngào chuẩn phong cách tiểu thư."
                 }
             });
         }
@@ -113,4 +113,3 @@ namespace AIClothingConsultant.Web.Services
         public Product? GetProductById(int id) => _products.FirstOrDefault(p => p.Id == id);
     }
 }
-
