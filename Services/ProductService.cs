@@ -26,7 +26,7 @@ namespace AIClothingConsultant.Web.Services
                     ThumbColor = "#F5EEFC",
                     Icon = "",
                     ImageFileName = "prod_1.jpg",
-                    Description = "Đầm voan tơ xếp bèo tầng tông tím lavender pastel dịu dàng, đính nơ nhỏ tinh tế, tôn dáng thanh thoát cho buổi dạo phố và tiệc nhẹ."
+                    Description = "Đầm voan tơ xếp bèo tầng tông tím lavender pastel dịu dàng, đính nơ cổ tinh tế cho nàng Gen Z đi café, chụp ảnh và dự tiệc nhẹ."
                 },
                 new Product
                 {
@@ -37,51 +37,51 @@ namespace AIClothingConsultant.Web.Services
                     ThumbColor = "#F7F1FC",
                     Icon = "",
                     ImageFileName = "prod_2.jpg",
-                    Description = "Áo cardigan len dệt kim mềm mịn dáng lửng, hàng cúc ngọc trai phong cách Hàn Quốc, dễ khoác ngoài váy liền hoặc chân váy xếp ly."
+                    Description = "Áo cardigan len dệt kim dáng lửng đính cúc ngọc trai phong cách Hàn Quốc, dễ khoác ngoài váy liền hoặc chân váy xếp ly."
                 },
                 new Product
                 {
                     Id = 3,
-                    Name = "Chân Váy Midi Xếp Ly Phối Ren",
-                    Category = "Chân váy",
-                    Price = 290000,
-                    ThumbColor = "#F4EEF9",
+                    Name = "Đầm Babydoll Tím Pastel Tay Bồng",
+                    Category = "Đầm",
+                    Price = 360000,
+                    ThumbColor = "#F5EEFC",
                     Icon = "",
                     ImageFileName = "prod_3.jpg",
-                    Description = "Chân váy midi cạp cao xếp ly mềm rủ phối viền ren tinh xảo, tôn vòng eo và dễ phối cùng áo sơ mi lụa hoặc cardigan."
+                    Description = "Đầm babydoll ngắn tông tím lavender pastel tay bồng nhẹ nhàng, chất vải mềm mát chuẩn phong cách nàng thơ Gen Z 16–24 tuổi."
                 },
                 new Product
                 {
                     Id = 4,
-                    Name = "Áo Kiểu Cổ Vuông Tay Bồng Thêu Hoa",
-                    Category = "Áo",
-                    Price = 260000,
-                    ThumbColor = "#FAF4FF",
+                    Name = "Chân Váy Ngắn Xếp Ly Cạp Cao",
+                    Category = "Chân váy",
+                    Price = 245000,
+                    ThumbColor = "#F3ECF8",
                     Icon = "",
                     ImageFileName = "prod_4.jpg",
-                    Description = "Áo kiểu nữ cổ vuông tay bồng thêu hoa nhí thanh lịch, chất cotton thoáng mát, phù hợp đi làm, đi học và hẹn hò cuối tuần."
+                    Description = "Chân váy ngắn xếp ly cạp cao màu tím than khói có quần bảo hộ bên trong, hack chân siêu dài khi phối cùng baby tee hoặc áo sơ mi."
                 },
                 new Product
                 {
                     Id = 5,
-                    Name = "Đầm Nhung Tím Than Dự Tiệc Cổ Điển",
+                    Name = "Đầm Nhung Tím Than Dự Tiệc Cổ Tim",
                     Category = "Đầm",
                     Price = 520000,
                     ThumbColor = "#EFE7F7",
                     Icon = "",
                     ImageFileName = "prod_5.jpg",
-                    Description = "Đầm nhung tím than cao cấp cổ tim viền ren nhẹ, phom ôm eo tôn dáng sang trọng và quý phái cho các buổi tiệc tối."
+                    Description = "Đầm nhung tím than cổ tim viền ren tinh tế, chiết eo tôn dáng sang trọng cho nàng 20–26 tuổi đi tiệc tối và hẹn hò."
                 },
                 new Product
                 {
                     Id = 6,
-                    Name = "Đầm Linen Kem Cổ Yếm Dáng Suông",
-                    Category = "Đầm",
-                    Price = 390000,
-                    ThumbColor = "#F6F1FA",
+                    Name = "Áo Khoác Cardigan Len Tím Môn Phom Rộng",
+                    Category = "Áo khoác",
+                    Price = 340000,
+                    ThumbColor = "#F6F0FC",
                     Icon = "",
                     ImageFileName = "prod_6.jpg",
-                    Description = "Đầm linen màu kem nhã nhặn thiết kế cổ yếm thanh thoát, chất vải tự nhiên mát nhẹ, lý tưởng cho mùa hè và du lịch."
+                    Description = "Áo khoác cardigan len mềm phom rộng màu tím môn pastel nhẹ nhàng, khoác ngoài áo hai dây hay váy liền đều cực xinh và trẻ trung."
                 },
                 new Product
                 {
@@ -92,7 +92,7 @@ namespace AIClothingConsultant.Web.Services
                     ThumbColor = "#F3ECF8",
                     Icon = "",
                     ImageFileName = "prod_7.jpg",
-                    Description = "Quần tây ống suông cạp cao tông tím khói trầm sang trọng, chất vải đứng phom ít nhăn giúp kéo dài đôi chân hiệu quả."
+                    Description = "Quần ống suông cạp cao tông tím khói trầm trẻ trung, chất vải đứng phom ít nhăn giúp kéo dài đôi chân khi đi học hay đi làm."
                 },
                 new Product
                 {
@@ -103,7 +103,7 @@ namespace AIClothingConsultant.Web.Services
                     ThumbColor = "#F5EEFB",
                     Icon = "",
                     ImageFileName = "prod_8.jpg",
-                    Description = "Áo khoác dạ tweed cổ tròn dáng ngắn phối cúc ngọc trai sang chảnh, tông tím pastel ngọt ngào chuẩn phong cách tiểu thư."
+                    Description = "Áo khoác dạ tweed cổ tròn dáng ngắn phối cúc ngọc trai tông tím pastel ngọt ngào chuẩn phong cách tiểu thư Gen Z."
                 }
             });
         }
