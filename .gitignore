@@ -12,6 +12,8 @@ obj/
 .env.*
 !.env.example
 secrets.json
+appsettings.Development.json
+appsettings.Local.json
 
 ## OS/editor files
 .DS_Store
