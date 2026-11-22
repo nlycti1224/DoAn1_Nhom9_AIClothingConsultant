@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -50,8 +51,8 @@ namespace AIClothingConsultant.Web.Services
             {sb}
 
             QUY TẮC TƯ VẤN:
-            - Luôn trả lời bằng tiếng Việt lịch sự, thân thiện, duyên dáng và có chuyên môn về thời trang.
-            - Khi tư vấn và gợi ý sản phẩm của shop, hãy dùng cú pháp [IMG:ID] (ví dụ: [IMG:1], [IMG:2]) ngay cạnh tên sản phẩm để hệ thống web tự động hiển thị thẻ card kèm ảnh thật của sản phẩm đó trong khung chat.
+            - Tuyệt đối CHỈ trả lời bằng tiếng Việt lịch sự, thân thiện, duyên dáng và có chuyên môn về thời trang. KHÔNG sử dụng bất kỳ chữ Hán hay ký tự tiếng Trung nào.
+            - Khi tư vấn và gợi ý sản phẩm của shop, BẮT BUỘC dùng đúng cú pháp [IMG:ID] (ví dụ: [IMG:1], [IMG:2], không viết [ID 1] hay [Mã: 1]) ngay cạnh tên sản phẩm để hệ thống web tự động hiển thị thẻ card kèm ảnh thật của sản phẩm đó trong khung chat.
               Ví dụ: "Bạn có thể phối mẫu Pastel Ruffle Dress [IMG:1] cùng Korean Knit Cardigan [IMG:2] rất thanh lịch và ngọt ngào!"
             - Gợi ý phối đồ (mix & match): màu sắc, phụ kiện, chất liệu, dịp đi chơi/tiệc/dạo phố.
             - Hướng dẫn người dùng bấm vào sản phẩm hoặc thêm vào giỏ hàng ngay trên web.
@@ -107,7 +108,8 @@ namespace AIClothingConsultant.Web.Services
                     throw new InvalidOperationException("Phản hồi từ Ollama không đúng định dạng mong đợi.");
                 }
 
-                string answer = contentEl.GetString() ?? "";
+                string rawAnswer = contentEl.GetString() ?? "";
+                string answer = SanitizeAiResponse(rawAnswer);
 
                 _messages.Add(new
                 {
@@ -123,6 +125,34 @@ namespace AIClothingConsultant.Web.Services
                     _messages.RemoveAt(_messages.Count - 1);
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Post-processing guard for small local models (qwen2.5:3b):
+        /// normalizes product image tags to [IMG:id] and strips stray Chinese characters.
+        /// </summary>
+        private static string SanitizeAiResponse(string raw)
+        {
+            if (string.IsNullOrWhiteSpace(raw)) return "";
+
+            // 1. Normalize malformed product tags like [ID 1], [Mã: 1], [MID:1] -> [IMG:1]
+            string text = Regex.Replace(
+                raw,
+                @"\[(?:ID|Mã|Ma|MID|IMG|IMAGE)\s*:?\s*(\d+)\]",
+                "[IMG:$1]",
+                RegexOptions.IgnoreCase);
+
+            // 2. Replace Chinese punctuation with standard Vietnamese punctuation
+            text = text.Replace("。", ".").Replace("，", ",").Replace("！", "!").Replace("？", "?");
+
+            // 3. Remove any stray CJK Unified Ideographs (Chinese characters)
+            text = Regex.Replace(text, @"[\u4E00-\u9FFF\u3400-\u4DBF]+", "");
+
+            // 4. Tidy extra spaces before punctuation
+            text = Regex.Replace(text, @"[ \t]{2,}", " ");
+            text = Regex.Replace(text, @" +([.,!?])", "$1");
+
+            return text.Trim();
         }
     }
 }
