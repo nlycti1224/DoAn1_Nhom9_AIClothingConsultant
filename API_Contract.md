@@ -1,4 +1,4 @@
-# API Contract — Web Frontend (Khánh) ↔ Backend ASP.NET Core (Ly)
+﻿# API Contract — Web Frontend (Khánh) ↔ Backend ASP.NET Core (Ly)
 
 > **Dự án:** Chatbot Tư vấn Thời trang AI (VELOUR) — Đồ án 1 · Nhóm 9 (75DCTT26)  
 > **Backend:** ASP.NET Core (.NET 9) + Ollama (`qwen2.5:3b`)  
@@ -27,7 +27,7 @@ Gửi câu hỏi của khách hàng tới Backend để chuyển tiếp sang Oll
 #### Response thành công — `200 OK`
 ```json
 {
-  "reply": "Bạn có thể chọn mẫu Pastel Ruffle Dress [IMG:1] phối cùng Korean Knit Cardigan [IMG:2] rất nhẹ nhàng và thanh lịch cho buổi dạo phố cuối tuần nhé!"
+  "reply": "Bạn có thể chọn mẫu Đầm Dạ Hội Satin Đỏ Dáng Xòe [IMG:1] phối cùng Áo Poncho Len Dệt Kim Tua Rua [IMG:2] rất nhẹ nhàng và thanh lịch cho buổi dạo phố cuối tuần nhé!"
 }
 ```
 | Trường | Kiểu | Mô tả |
@@ -77,13 +77,13 @@ Lấy toàn bộ danh sách sản phẩm để Frontend hiển thị lưới s�
 [
   {
     "id": 1,
-    "name": "Pastel Ruffle Dress",
+    "name": "Đầm Dạ Hội Satin Đỏ Dáng Xòe",
     "category": "Dresses",
     "price": 320000,
     "thumbColor": "#F3E1FF",
     "icon": "👗",
     "imageFileName": "pastel_dress.jpg",
-    "description": "Váy voan pastel dáng xòe nhẹ nhàng...",
+    "description": "Đầm satin đỏ cổ yếm dáng xòe rộng...",
     "isWishlisted": false,
     "formattedPrice": "320,000 ₫",
     "imageUrl": "/images/pastel_dress.jpg"
@@ -113,7 +113,7 @@ Khi tích hợp xong bảng `Products` từ SQL Server, `POST /api/chat` có th�
   "products": [
     {
       "id": 1,
-      "name": "Pastel Ruffle Dress",
+      "name": "Đầm Dạ Hội Satin Đỏ Dáng Xòe",
       "price": 320000,
       "formattedPrice": "320,000 ₫",
       "category": "Dresses",
@@ -123,3 +123,4 @@ Khi tích hợp xong bảng `Products` từ SQL Server, `POST /api/chat` có th�
 }
 ```
 Frontend chỉ cần kiểm tra: nếu có `data.products` thì render trực tiếp, nếu không thì tiếp tục parse `[IMG:id]` như hiện tại.
+

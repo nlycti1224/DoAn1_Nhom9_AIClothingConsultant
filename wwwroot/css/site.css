@@ -1,24 +1,26 @@
-/* ================================================================
+﻿/* ================================================================
    VELOUR — Editorial Fashion Store Design System
    Inspired by JM Dress Design (jm.com.vn) & UNIQLO Vietnam
    ================================================================ */
 
 :root {
     --bg: #ffffff;
-    --bg-soft: #f7f6f3;
-    --bg-card: #f4f3ef;
-    --ink: #111111;
-    --ink-muted: #666666;
-    --ink-subtle: #999999;
-    --border: #e8e6e1;
-    --border-strong: #d0cdc6;
-    --accent: #111111;
-    --accent-sale: #b81d24;
-    --font-serif: 'Cormorant Garamond', Georgia, serif;
-    --font-sans: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
-    --radius: 2px;
-    --shadow-sm: 0 2px 10px rgba(17, 17, 17, 0.05);
-    --shadow-lg: 0 18px 48px rgba(17, 17, 17, 0.14);
+    --bg-soft: #faf5ff;
+    --bg-card: #f3eafb;
+    --ink: #3c2850;
+    --ink-muted: #7d6592;
+    --ink-subtle: #a58fb8;
+    --border: #eddff8;
+    --border-strong: #d9c3ee;
+    --accent: #9e5fc0;
+    --accent-dark: #7f46a3;
+    --accent-soft: #b478d2;
+    --accent-sale: #d6407f;
+    --font-serif: 'Plus Jakarta Sans', 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-sans: 'Be Vietnam Pro', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --radius: 6px;
+    --shadow-sm: 0 2px 10px rgba(140, 90, 180, 0.08);
+    --shadow-lg: 0 18px 48px rgba(110, 60, 150, 0.2);
 }
 
 *, *::before, *::after {
@@ -37,6 +39,7 @@ body {
     color: var(--ink);
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
+    font-variant-numeric: lining-nums;
 }
 
 img {
@@ -119,7 +122,7 @@ button, input {
 .brand-wordmark {
     font-family: var(--font-serif);
     font-size: 1.7rem;
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: 0.16em;
     line-height: 1;
 }
@@ -244,7 +247,7 @@ button, input {
     height: 16px;
     padding: 0 4px;
     border-radius: 999px;
-    background: var(--ink);
+    background: var(--accent);
     color: #fff;
     font-size: 0.65rem;
     font-weight: 600;
@@ -307,9 +310,9 @@ button, input {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    background: var(--ink);
+    background: var(--accent);
     color: #fff;
-    border: 1px solid var(--ink);
+    border: 1px solid var(--accent);
     padding: 13px 26px;
     font-size: 0.78rem;
     font-weight: 600;
@@ -320,7 +323,7 @@ button, input {
 }
 
 .btn-primary-velour:hover {
-    background: #2b2b2b;
+    background: var(--accent-dark);
 }
 
 .btn-secondary-velour {
@@ -330,7 +333,7 @@ button, input {
     gap: 8px;
     background: #fff;
     color: var(--ink);
-    border: 1px solid var(--ink);
+    border: 1px solid var(--accent);
     padding: 13px 22px;
     font-size: 0.78rem;
     font-weight: 600;
@@ -341,7 +344,7 @@ button, input {
 }
 
 .btn-secondary-velour:hover {
-    background: var(--ink);
+    background: var(--accent);
     color: #fff;
 }
 
@@ -434,7 +437,7 @@ button, input {
     right: 0;
     bottom: 0;
     padding: 10px 12px;
-    background: linear-gradient(to top, rgba(17, 17, 17, 0.72), transparent);
+    background: linear-gradient(to top, rgba(60, 40, 80, 0.72), transparent);
     color: #fff;
     font-size: 0.76rem;
     font-weight: 500;
@@ -592,7 +595,7 @@ button, input {
     position: absolute;
     top: 10px;
     left: 10px;
-    background: var(--ink);
+    background: var(--accent);
     color: #fff;
     font-size: 0.65rem;
     font-weight: 600;
@@ -611,7 +614,7 @@ button, input {
     width: 34px;
     height: 34px;
     border-radius: 50%;
-    border: 1px solid rgba(17, 17, 17, 0.08);
+    border: 1px solid rgba(60, 40, 80, 0.08);
     background: rgba(255, 255, 255, 0.92);
     color: var(--ink);
     display: flex;
@@ -662,23 +665,23 @@ button, input {
 }
 
 .btn-quick-cart {
-    background: rgba(17, 17, 17, 0.94);
+    background: rgba(158, 95, 192, 0.96);
     color: #fff;
-    border: 1px solid var(--ink);
+    border: 1px solid var(--accent);
 }
 
 .btn-quick-cart:hover {
-    background: #000;
+    background: var(--accent-dark);
 }
 
 .btn-quick-ai {
     background: rgba(255, 255, 255, 0.96);
     color: var(--ink);
-    border: 1px solid rgba(17, 17, 17, 0.2);
+    border: 1px solid rgba(60, 40, 80, 0.2);
 }
 
 .btn-quick-ai:hover {
-    background: var(--ink);
+    background: var(--accent);
     color: #fff;
 }
 
@@ -826,7 +829,7 @@ button, input {
 
 /* ==================== FOOTER ==================== */
 .site-footer {
-    background: #111111;
+    background: #3c2850;
     color: #d4d4d4;
 }
 
@@ -890,7 +893,7 @@ button, input {
 .modal-backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(17, 17, 17, 0.55);
+    background: rgba(60, 40, 80, 0.55);
     backdrop-filter: blur(3px);
     z-index: 240;
     opacity: 0;
@@ -942,7 +945,7 @@ button, input {
 }
 
 .modal-close-btn:hover {
-    background: var(--ink);
+    background: var(--accent);
     color: #fff;
 }
 
@@ -1027,7 +1030,7 @@ button, input {
 .size-pill.active,
 .size-pill:hover {
     border-color: var(--ink);
-    background: var(--ink);
+    background: var(--accent);
     color: #fff;
 }
 
@@ -1041,7 +1044,7 @@ button, input {
 .cart-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(17, 17, 17, 0.45);
+    background: rgba(60, 40, 80, 0.45);
     z-index: 200;
     opacity: 0;
     pointer-events: none;
@@ -1214,7 +1217,7 @@ button, input {
 .btn-checkout {
     width: 100%;
     padding: 13px;
-    background: var(--ink);
+    background: var(--accent);
     color: #fff;
     border: none;
     font-size: 0.8rem;
@@ -1224,7 +1227,7 @@ button, input {
 }
 
 .btn-checkout:hover {
-    background: #2b2b2b;
+    background: var(--accent-dark);
 }
 
 /* ==================== AI CHAT WIDGET ==================== */
@@ -1244,17 +1247,17 @@ button, input {
     gap: 9px;
     padding: 13px 20px;
     border-radius: 999px;
-    background: var(--ink);
+    background: var(--accent);
     color: #fff;
     border: 1px solid rgba(255, 255, 255, 0.14);
-    box-shadow: 0 10px 28px rgba(17, 17, 17, 0.25);
+    box-shadow: 0 10px 28px rgba(60, 40, 80, 0.25);
     cursor: pointer;
     transition: transform 0.2s, background 0.2s;
 }
 
 .chat-bubble-btn:hover {
     transform: translateY(-2px);
-    background: #222;
+    background: var(--accent-dark);
 }
 
 .chat-fab-label {
@@ -1286,7 +1289,7 @@ button, input {
 }
 
 .chat-header {
-    background: var(--ink);
+    background: var(--accent);
     color: #fff;
     padding: 14px 16px;
     display: flex;
@@ -1389,7 +1392,7 @@ button, input {
 }
 
 .msg-row.user .msg-bubble {
-    background: var(--ink);
+    background: var(--accent);
     color: #fff;
 }
 
@@ -1418,7 +1421,7 @@ button, input {
 }
 
 .msg-card-btn {
-    background: var(--ink);
+    background: var(--accent);
     color: #fff;
     border: none;
     padding: 6px 10px;
@@ -1460,7 +1463,7 @@ button, input {
 .btn-send-chat {
     width: 40px;
     border: none;
-    background: var(--ink);
+    background: var(--accent);
     color: #fff;
     display: flex;
     align-items: center;
@@ -1469,7 +1472,7 @@ button, input {
 }
 
 .btn-send-chat:hover {
-    background: #2b2b2b;
+    background: var(--accent-dark);
 }
 
 /* ==================== TOAST ==================== */
@@ -1478,7 +1481,7 @@ button, input {
     left: 50%;
     bottom: 28px;
     transform: translateX(-50%) translateY(20px);
-    background: var(--ink);
+    background: var(--accent);
     color: #fff;
     padding: 11px 20px;
     font-size: 0.82rem;
@@ -1550,3 +1553,5 @@ button, input {
         grid-template-columns: 1fr;
     }
 }
+
+

@@ -1,4 +1,4 @@
-@page
+﻿@page
 @model IndexModel
 @{
     ViewData["Title"] = "VELOUR — Thời Trang Thiết Kế & Trợ Lý Phối Đồ AI";
@@ -33,7 +33,7 @@
             <a class="cat-link" data-cat="Áo" onclick="filterCategory('Áo')">Áo</a>
             <a class="cat-link" data-cat="Chân váy" onclick="filterCategory('Chân váy')">Chân váy</a>
             <a class="cat-link" data-cat="Áo khoác" onclick="filterCategory('Áo khoác')">Áo khoác</a>
-            <a class="cat-link" data-cat="Đồ nam" onclick="filterCategory('Đồ nam')">Đồ nam</a>
+            <a class="cat-link" data-cat="Quần" onclick="filterCategory('Quần')">Quần</a>
             <a class="cat-link cat-sale" data-cat="Ưu đãi" onclick="filterCategory('Ưu đãi')">Ưu đãi</a>
         </nav>
 
@@ -71,7 +71,7 @@
             <div class="hero-eyebrow">BỘ SƯU TẬP XUÂN — HÈ 2026</div>
             <h1 class="hero-title">Thanh Lịch Trong<br>Từng Đường Nét</h1>
             <p class="hero-sub">
-                Thiết kế tinh giản chuẩn phom dáng hiện đại từ voan tơ, linen tự nhiên và len dệt kim cao cấp.
+                Thiết kế hiện đại, dễ phối từ satin, cotton thêu, len dệt kim và vải đứng form cao cấp.
                 Trải nghiệm gợi ý phối đồ cá nhân hóa tức thì cùng <strong>Velour AI Stylist</strong>.
             </p>
             <div class="hero-cta">
@@ -97,20 +97,20 @@
 
         <div class="hero-lookbook">
             <div class="lookbook-main" onclick="showProductModal(1)">
-                <img src="/images/pastel_dress.jpg" alt="Đầm Xòe Xếp Bèo Pastel" />
+                <img src="/images/pastel_dress.jpg" alt="Đầm Dạ Hội Satin Đỏ Dáng Xòe" />
                 <div class="lookbook-caption">
                     <span>NỔI BẬT</span>
-                    <strong>Đầm Xòe Xếp Bèo Pastel · 420,000 ₫</strong>
+                    <strong>Đầm Dạ Hội Satin Đỏ Dáng Xòe · 420,000 ₫</strong>
                 </div>
             </div>
             <div class="lookbook-side">
                 <div class="lookbook-mini" onclick="showProductModal(2)">
-                    <img src="/images/korean_cardigan.jpg" alt="Áo Cardigan Len Dệt Kim Hàn Quốc" />
-                    <div class="lookbook-mini-label">Áo Cardigan Len Dệt Kim</div>
+                    <img src="/images/korean_cardigan.jpg" alt="Áo Poncho Len Dệt Kim Tua Rua" />
+                    <div class="lookbook-mini-label">Áo Poncho Len Tua Rua</div>
                 </div>
                 <div class="lookbook-mini" onclick="showProductModal(5)">
-                    <img src="/images/gothic_dress.jpg" alt="Đầm Nhung Đen Phối Corset Cổ Điển" />
-                    <div class="lookbook-mini-label">Đầm Nhung Cổ Điển</div>
+                    <img src="/images/gothic_dress.jpg" alt="Quần Ống Rộng Kẻ Sọc Đen Trắng" />
+                    <div class="lookbook-mini-label">Quần Ống Rộng Kẻ Sọc</div>
                 </div>
             </div>
         </div>
@@ -132,34 +132,34 @@
             <div class="cat-img-wrap"><img src="/images/pastel_dress.jpg" alt="Váy đầm thiết kế" /></div>
             <div class="cat-meta">
                 <span class="cat-name">Váy Đầm Thiết Kế</span>
-                <span class="cat-count">4 mẫu</span>
+                <span class="cat-count">3 mẫu</span>
             </div>
         </div>
         <div class="category-card" data-cat="Áo khoác" onclick="filterCategory('Áo khoác')">
-            <div class="cat-img-wrap"><img src="/images/korean_cardigan.jpg" alt="Áo khoác cardigan" /></div>
+            <div class="cat-img-wrap"><img src="/images/korean_cardigan.jpg" alt="Áo poncho len" /></div>
             <div class="cat-meta">
-                <span class="cat-name">Áo Khoác & Cardigan</span>
+                <span class="cat-name">Áo Khoác & Poncho</span>
                 <span class="cat-count">1 mẫu</span>
             </div>
         </div>
         <div class="category-card" data-cat="Chân váy" onclick="filterCategory('Chân váy')">
-            <div class="cat-img-wrap"><img src="/images/lace_skirt.jpg" alt="Chân váy midi" /></div>
+            <div class="cat-img-wrap"><img src="/images/lace_skirt.jpg" alt="Chân váy xếp ly" /></div>
             <div class="cat-meta">
-                <span class="cat-name">Chân Váy Midi</span>
+                <span class="cat-name">Chân Váy Xếp Ly</span>
                 <span class="cat-count">1 mẫu</span>
             </div>
         </div>
         <div class="category-card" data-cat="Áo" onclick="filterCategory('Áo')">
-            <div class="cat-img-wrap"><img src="/images/puff_blouse.jpg" alt="Áo kiểu nữ tính" /></div>
+            <div class="cat-img-wrap"><img src="/images/puff_blouse.jpg" alt="Áo sơ mi nữ" /></div>
             <div class="cat-meta">
-                <span class="cat-name">Áo Kiểu Nữ Tính</span>
-                <span class="cat-count">1 mẫu</span>
+                <span class="cat-name">Áo Sơ Mi & Áo Kiểu</span>
+                <span class="cat-count">2 mẫu</span>
             </div>
         </div>
-        <div class="category-card" data-cat="Đồ nam" onclick="filterCategory('Đồ nam')">
-            <div class="cat-img-wrap"><img src="/images/linen_shirt.jpg" alt="Đồ nam tối giản" /></div>
+        <div class="category-card" data-cat="Quần" onclick="filterCategory('Quần')">
+            <div class="cat-img-wrap"><img src="/images/gothic_dress.jpg" alt="Quần ống rộng" /></div>
             <div class="cat-meta">
-                <span class="cat-name">Đồ Nam Tối Giản</span>
+                <span class="cat-name">Quần Ống Rộng</span>
                 <span class="cat-count">1 mẫu</span>
             </div>
         </div>
@@ -281,7 +281,7 @@
             </svg>
             <div>
                 <strong>Chất liệu tuyển chọn</strong>
-                <span>Voan tơ, linen, len dệt kim cao cấp</span>
+                <span>Satin, cotton, len dệt kim cao cấp</span>
             </div>
         </div>
     </div>
@@ -297,9 +297,9 @@
         <div>
             <div class="footer-col-title">Danh mục</div>
             <a onclick="filterCategory('Váy đầm')">Váy đầm thiết kế</a>
-            <a onclick="filterCategory('Áo')">Áo kiểu nữ tính</a>
-            <a onclick="filterCategory('Chân váy')">Chân váy midi</a>
-            <a onclick="filterCategory('Áo khoác')">Áo khoác & Cardigan</a>
+            <a onclick="filterCategory('Áo')">Áo sơ mi & áo kiểu</a>
+            <a onclick="filterCategory('Chân váy')">Chân váy xếp ly</a>
+            <a onclick="filterCategory('Quần')">Quần ống rộng</a>
         </div>
         <div>
             <div class="footer-col-title">Hỗ trợ khách hàng</div>
@@ -452,3 +452,4 @@
 @section Scripts {
     <script src="~/js/site.js" asp-append-version="true"></script>
 }
+
