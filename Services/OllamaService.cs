@@ -28,10 +28,10 @@ namespace AIClothingConsultant.Web.Services
             string baseUrl = configuration["Ollama:BaseUrl"] ?? "http://localhost:11434/";
             if (!baseUrl.EndsWith('/')) baseUrl += "/";
             _model = configuration["Ollama:Model"] ?? "qwen2.5:3b";
-            int timeoutSeconds = int.TryParse(configuration["Ollama:TimeoutSeconds"], out int sec) && sec > 0 ? sec : 90;
-            _numThread = int.TryParse(configuration["Ollama:NumThread"], out int th) && th > 0 ? th : 2;
-            _numCtx = int.TryParse(configuration["Ollama:NumCtx"], out int ctx) && ctx >= 512 ? ctx : 2048;
-            _numPredict = int.TryParse(configuration["Ollama:NumPredict"], out int pred) && pred >= 64 ? pred : 220;
+            int timeoutSeconds = int.TryParse(configuration["Ollama:TimeoutSeconds"], out int sec) && sec > 0 ? sec : 150;
+            _numThread = int.TryParse(configuration["Ollama:NumThread"], out int th) && th > 0 ? th : 3;
+            _numCtx = int.TryParse(configuration["Ollama:NumCtx"], out int ctx) && ctx >= 512 ? ctx : 1536;
+            _numPredict = int.TryParse(configuration["Ollama:NumPredict"], out int pred) && pred >= 64 ? pred : 150;
 
             _httpClient.BaseAddress = new Uri(baseUrl);
             _httpClient.Timeout = TimeSpan.FromSeconds(timeoutSeconds);
