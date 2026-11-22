@@ -1,10 +1,16 @@
-// Velour E-Commerce & AI Chatbot State Management
+// VELOUR E-Commerce & AI Stylist State Management
 
 let allProducts = [];
 let cart = [];
 let currentCategory = 'All';
 let isChatOpen = false;
 let isChatExpanded = false;
+let toastTimer = null;
+
+const SVG_HEART_OUTLINE = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5C12 20.5 4 15.2 4 9.5C4 6.8 6.1 4.8 8.6 4.8C10.2 4.8 11.4 5.7 12 6.8C12.6 5.7 13.8 4.8 15.4 4.8C17.9 4.8 20 6.8 20 9.5C20 15.2 12 20.5 12 20.5Z"/></svg>`;
+const SVG_HEART_FILLED = `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5C12 20.5 4 15.2 4 9.5C4 6.8 6.1 4.8 8.6 4.8C10.2 4.8 11.4 5.7 12 6.8C12.6 5.7 13.8 4.8 15.4 4.8C17.9 4.8 20 6.8 20 9.5C20 15.2 12 20.5 12 20.5Z"/></svg>`;
+const SVG_PLUS = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5V19M5 12H19"/></svg>`;
+const SVG_SPARK = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L13.8 8.2L19 10L13.8 11.8L12 17L10.2 11.8L5 10L10.2 8.2L12 3Z"/></svg>`;
 
 document.addEventListener('DOMContentLoaded', async () => {
     await loadProducts();
@@ -22,7 +28,6 @@ async function loadProducts() {
 }
 
 function initEventListeners() {
-    // Search Live Filter
     const searchInput = document.getElementById('navSearch');
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
@@ -30,7 +35,6 @@ function initEventListeners() {
         });
     }
 
-    // Chat Enter Key
     const chatInput = document.getElementById('chatInput');
     if (chatInput) {
         chatInput.addEventListener('keydown', (e) => {
@@ -40,13 +44,30 @@ function initEventListeners() {
             }
         });
     }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeProductModal();
+    });
+}
+
+function showToast(msg) {
+    const el = document.getElementById('velourToast');
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 2400);
+}
+
+function scrollToProducts() {
+    const sec = document.getElementById('productsSection');
+    if (sec) sec.scrollIntoView({ behavior: 'smooth' });
 }
 
 // ══════════════ FILTERING & SEARCH ══════════════
 function filterCategory(category) {
     currentCategory = category;
 
-    // Active Tab in Nav / Cards
     document.querySelectorAll('.cat-link').forEach(el => {
         el.classList.toggle('active', el.dataset.cat === category);
     });
@@ -61,7 +82,11 @@ function filterCategory(category) {
 
     const title = document.getElementById('productSectionTitle');
     if (title) {
-        title.innerText = (category === 'All') ? 'Tất cả sản phẩm' : `Sản phẩm: ${category}`;
+        title.innerText = (category === 'All') ? 'Tất cả sản phẩm' : category;
+    }
+
+    if (category !== 'All') {
+        scrollToProducts();
     }
 }
 
@@ -72,11 +97,13 @@ function renderFilteredProducts(keyword = '') {
     let filtered = allProducts;
 
     if (currentCategory !== 'All') {
-        if (currentCategory === 'New Arrivals') filtered = filtered.slice(0, 4);
-        else if (currentCategory === 'Women') filtered = filtered.filter(p => p.category !== 'Men');
-        else if (currentCategory === 'Men') filtered = filtered.filter(p => p.category === 'Men');
-        else if (currentCategory === 'Sale ♥') filtered = filtered.filter(p => p.price < 350000);
-        else filtered = filtered.filter(p => p.category.toLowerCase() === currentCategory.toLowerCase());
+        if (currentCategory === 'Hàng mới') {
+            filtered = filtered.slice(0, 4);
+        } else if (currentCategory === 'Ưu đãi') {
+            filtered = filtered.filter(p => p.price < 350000);
+        } else {
+            filtered = filtered.filter(p => p.category.toLowerCase() === currentCategory.toLowerCase());
+        }
     }
 
     if (keyword) {
@@ -87,32 +114,102 @@ function renderFilteredProducts(keyword = '') {
         );
     }
 
+    const countEl = document.getElementById('productCountLabel');
+    if (countEl) countEl.textContent = `${filtered.length} sản phẩm`;
+
     if (filtered.length === 0) {
-        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted); font-style: italic;">
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 48px 16px; color: var(--ink-muted);">
             Không tìm thấy sản phẩm nào phù hợp với từ khóa "${keyword}".
         </div>`;
         return;
     }
 
-    grid.innerHTML = filtered.map(p => `
-        <div class="product-card">
+    grid.innerHTML = filtered.map(p => {
+        const tagHtml = p.price < 350000
+            ? `<span class="product-tag tag-sale">GIÁ TỐT</span>`
+            : (p.id <= 4 ? `<span class="product-tag">MỚI</span>` : '');
+
+        return `
+        <article class="product-card">
             <div class="product-thumb" onclick="showProductModal(${p.id})">
-                <img src="${p.imageUrl}" alt="${p.name}" />
-                <button class="wish-btn" onclick="event.stopPropagation(); toggleWishlist(${p.id})">
-                    ${p.isWishlisted ? '❤️' : '🤍'}
+                <img src="${p.imageUrl}" alt="${p.name}" loading="lazy" />
+                ${tagHtml}
+                <button class="wish-btn ${p.isWishlisted ? 'active' : ''}" onclick="event.stopPropagation(); toggleWishlist(${p.id})" aria-label="Yêu thích">
+                    ${p.isWishlisted ? SVG_HEART_FILLED : SVG_HEART_OUTLINE}
                 </button>
+                <div class="product-quick-bar" onclick="event.stopPropagation()">
+                    <button class="btn-quick-cart" id="btn-cart-${p.id}" onclick="addToCart(${p.id})">
+                        ${SVG_PLUS}
+                        <span>Thêm vào giỏ</span>
+                    </button>
+                    <button class="btn-quick-ai" onclick="askAiAboutProduct(${p.id})" title="Hỏi AI cách phối mẫu này">
+                        ${SVG_SPARK}
+                        <span>Phối đồ</span>
+                    </button>
+                </div>
             </div>
             <div class="product-info">
                 <div class="product-cat">${p.category}</div>
-                <div class="product-name" onclick="showProductModal(${p.id})">${p.name}</div>
+                <h3 class="product-name" onclick="showProductModal(${p.id})">${p.name}</h3>
                 <div class="product-price">${p.formattedPrice}</div>
-                <div class="product-actions">
-                    <button class="btn-add-cart" id="btn-cart-${p.id}" onclick="addToCart(${p.id})">+ Thêm giỏ</button>
-                    <button class="btn-ask-ai" onclick="askAiAboutProduct(${p.id})">💬 Stylist</button>
-                </div>
             </div>
-        </div>
-    `).join('');
+        </article>`;
+    }).join('');
+}
+
+// ══════════════ PRODUCT DETAIL MODAL ══════════════
+function showProductModal(productId) {
+    const p = allProducts.find(x => x.id === productId);
+    if (!p) return;
+
+    document.getElementById('pmImg').src = p.imageUrl;
+    document.getElementById('pmImg').alt = p.name;
+    document.getElementById('pmCat').textContent = p.category;
+    document.getElementById('pmName').textContent = p.name;
+    document.getElementById('pmPrice').textContent = p.formattedPrice;
+    document.getElementById('pmDesc').textContent = p.description;
+
+    document.getElementById('pmAddCartBtn').onclick = () => {
+        addToCart(p.id);
+        closeProductModal();
+    };
+    document.getElementById('pmAskAiBtn').onclick = () => {
+        closeProductModal();
+        askAiAboutProduct(p.id);
+    };
+
+    document.getElementById('productModalBackdrop').classList.add('open');
+    document.getElementById('productModal').classList.add('open');
+}
+
+function closeProductModal() {
+    const bd = document.getElementById('productModalBackdrop');
+    const md = document.getElementById('productModal');
+    if (bd) bd.classList.remove('open');
+    if (md) md.classList.remove('open');
+}
+
+function selectSize(btn) {
+    document.querySelectorAll('.size-pill').forEach(el => el.classList.remove('active'));
+    btn.classList.add('active');
+}
+
+// ══════════════ WISHLIST & PROMO ══════════════
+function toggleWishlist(productId) {
+    const prod = allProducts.find(p => p.id === productId);
+    if (!prod) return;
+    prod.isWishlisted = !prod.isWishlisted;
+    const kw = (document.getElementById('navSearch')?.value || '').trim().toLowerCase();
+    renderFilteredProducts(kw);
+    showToast(prod.isWishlisted ? `Đã lưu "${prod.name}" vào yêu thích.` : `Đã bỏ yêu thích "${prod.name}".`);
+}
+
+function copyPromoCode() {
+    navigator.clipboard?.writeText('VELOUR15').then(() => {
+        showToast("Đã sao chép mã ưu đãi VELOUR15 (giảm 15%).");
+    }).catch(() => {
+        showToast("Mã ưu đãi của bạn: VELOUR15");
+    });
 }
 
 // ══════════════ SHOPPING CART ══════════════
@@ -137,20 +234,7 @@ function addToCart(productId) {
     }
 
     updateCartUI();
-
-    // Feedback effect on button
-    const btn = document.getElementById(`btn-cart-${productId}`);
-    if (btn) {
-        const originalText = btn.innerText;
-        btn.innerText = "✓ Đã thêm!";
-        btn.style.background = "var(--accent)";
-        btn.style.color = "#FFF";
-        setTimeout(() => {
-            btn.innerText = originalText;
-            btn.style.background = "";
-            btn.style.color = "";
-        }, 1200);
-    }
+    showToast(`Đã thêm "${prod.name}" vào giỏ hàng.`);
 }
 
 function updateCartQty(productId, delta) {
@@ -164,42 +248,44 @@ function updateCartQty(productId, delta) {
     updateCartUI();
 }
 
-function clearCart() {
-    cart = [];
+function removeCartItem(productId) {
+    cart = cart.filter(c => c.product.id !== productId);
     updateCartUI();
 }
 
 function updateCartUI() {
-    const totalItems = cart.reduce((sum, i) => sum + i.quantity, 0);
-    const totalPrice = cart.reduce((sum, i) => sum + (i.quantity * i.product.price), 0);
-
     const badge = document.getElementById('cartBadge');
-    if (badge) badge.innerText = totalItems;
-
+    const list = document.getElementById('cartItemsList');
     const totalEl = document.getElementById('cartTotalDisplay');
-    if (totalEl) totalEl.innerText = totalPrice.toLocaleString('vi-VN') + ' ₫';
 
-    const itemsContainer = document.getElementById('cartItemsList');
-    if (!itemsContainer) return;
+    const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const totalPrice = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
+    if (badge) badge.textContent = totalCount;
+    if (totalEl) totalEl.textContent = totalPrice.toLocaleString('vi-VN') + ' ₫';
+
+    if (!list) return;
     if (cart.length === 0) {
-        itemsContainer.innerHTML = `<div style="text-align: center; margin-top: 60px; color: var(--text-muted); font-style: italic;">
-            Giỏ hàng của bạn đang trống.<br>Hãy chọn thêm sản phẩm xinh nhé! ✨
-        </div>`;
+        list.innerHTML = `<div class="cart-empty">Giỏ hàng của bạn hiện đang trống.<br>Hãy khám phá bộ sưu tập mới của VELOUR.</div>`;
         return;
     }
 
-    itemsContainer.innerHTML = cart.map(item => `
+    list.innerHTML = cart.map(item => `
         <div class="cart-item-row">
-            <img class="cart-item-img" src="${item.product.imageUrl}" alt="${item.product.name}" />
-            <div class="cart-item-info">
-                <div class="cart-item-title">${item.product.name}</div>
-                <div class="cart-item-price">${item.product.formattedPrice}</div>
-            </div>
-            <div class="cart-qty-ctrl">
-                <button class="cart-qty-btn" onclick="updateCartQty(${item.product.id}, -1)">-</button>
-                <span style="font-size: 0.9rem; font-weight: 600;">${item.quantity}</span>
-                <button class="cart-qty-btn" onclick="updateCartQty(${item.product.id}, 1)">+</button>
+            <img src="${item.product.imageUrl}" alt="${item.product.name}" />
+            <div class="cart-item-meta">
+                <div>
+                    <div class="cart-item-name">${item.product.name}</div>
+                    <div class="cart-item-price">${item.product.formattedPrice}</div>
+                </div>
+                <div class="cart-qty-ctrl">
+                    <div class="qty-box">
+                        <button class="qty-btn" onclick="updateCartQty(${item.product.id}, -1)">-</button>
+                        <span class="qty-val">${item.quantity}</span>
+                        <button class="qty-btn" onclick="updateCartQty(${item.product.id}, 1)">+</button>
+                    </div>
+                    <button class="btn-remove-item" onclick="removeCartItem(${item.product.id})">Xóa</button>
+                </div>
             </div>
         </div>
     `).join('');
@@ -207,49 +293,14 @@ function updateCartUI() {
 
 function checkoutOrder() {
     if (cart.length === 0) {
-        alert("Giỏ hàng của bạn đang trống!");
+        showToast("Giỏ hàng của bạn đang trống.");
         return;
     }
-
-    const total = cart.reduce((sum, i) => sum + (i.quantity * i.product.price), 0);
-    const confirmOrder = confirm(`Xác nhận đặt hàng thành công!\nTổng cộng: ${total.toLocaleString('vi-VN')} ₫\n\nBạn có muốn mở Stylist AI để nhận hướng dẫn phối đồ và bảo quản trang phục không?`);
-
+    const totalPrice = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+    showToast(`Đặt hàng thành công (${totalPrice.toLocaleString('vi-VN')} ₫). Cảm ơn bạn!`);
     cart = [];
     updateCartUI();
     toggleCartDrawer();
-
-    if (confirmOrder) {
-        openChat();
-        const chatInput = document.getElementById('chatInput');
-        if (chatInput) {
-            chatInput.value = "Tôi vừa đặt mua đơn hàng tại shop, nhờ bạn gửi lời cảm ơn và hướng dẫn cách giặt ủi giữ form chuẩn nhé!";
-            sendChatMessage();
-        }
-    }
-}
-
-function toggleWishlist(productId) {
-    const prod = allProducts.find(p => p.id === productId);
-    if (!prod) return;
-
-    prod.isWishlisted = !prod.isWishlisted;
-    const searchInput = document.getElementById('navSearch');
-    renderFilteredProducts(searchInput ? searchInput.value.trim().toLowerCase() : '');
-}
-
-function showProductModal(productId) {
-    const p = allProducts.find(x => x.id === productId);
-    if (!p) return;
-
-    alert(`👗 ${p.name}\n🏷️ Phong cách: ${p.category}\n💰 Giá: ${p.formattedPrice}\n\n📝 Mô tả: ${p.description}\n\nMẹo: Bấm nút '💬 Stylist' để nhờ AI tư vấn cách phối đồ.`);
-}
-
-function copyPromoCode() {
-    navigator.clipboard.writeText("VELOUR15").then(() => {
-        alert("Đã sao chép mã giảm giá: VELOUR15! Giảm 15% khi mua hàng.");
-    }).catch(() => {
-        alert("Mã giảm giá: VELOUR15");
-    });
 }
 
 // ══════════════ AI CHAT WIDGET ══════════════
@@ -270,18 +321,33 @@ function openChat() {
     isChatOpen = true;
     const popup = document.getElementById('chatPopup');
     if (popup) popup.classList.add('open');
+    const input = document.getElementById('chatInput');
+    if (input) input.focus();
     scrollChatToBottom();
 }
 
 function toggleExpandChat() {
     isChatExpanded = !isChatExpanded;
     const popup = document.getElementById('chatPopup');
-    const btn = document.getElementById('btnExpandChat');
-    if (!popup || !btn) return;
+    if (!popup) return;
 
     popup.classList.toggle('expanded', isChatExpanded);
-    btn.innerText = isChatExpanded ? '⤡' : '⤢';
     scrollChatToBottom();
+}
+
+async function resetChatHistory() {
+    try {
+        await fetch('/api/chat/reset', { method: 'POST' });
+    } catch { }
+    const container = document.getElementById('chatMessages');
+    if (container) {
+        container.innerHTML = `
+            <div class="msg-row bot">
+                <div class="msg-bubble">
+                    Đã làm mới cuộc trò chuyện. Bạn cần <strong>Velour AI Stylist</strong> tư vấn mẫu trang phục nào hôm nay?
+                </div>
+            </div>`;
+    }
 }
 
 function askAiAboutProduct(productId) {
@@ -291,7 +357,7 @@ function askAiAboutProduct(productId) {
     openChat();
     const chatInput = document.getElementById('chatInput');
     if (chatInput) {
-        chatInput.value = `Món đồ '${p.name}' (${p.category}, giá ${p.formattedPrice}) phối với trang phục gì và đi dịp nào thì hợp?`;
+        chatInput.value = `Mẫu '${p.name}' (${p.category}, giá ${p.formattedPrice}) nên phối cùng trang phục nào và hợp mặc dịp gì?`;
         chatInput.focus();
     }
 }
@@ -358,7 +424,6 @@ function appendMessage(sender, text) {
     const row = document.createElement('div');
     row.className = `msg-row ${sender}`;
 
-    // Look for [IMG:id] tags to render rich product preview cards
     const regex = /\[IMG:(\d+)\]/g;
     let match;
     let productCardsHtml = '';
@@ -369,18 +434,17 @@ function appendMessage(sender, text) {
         if (prod) {
             productCardsHtml += `
                 <div class="msg-card-product">
-                    <img src="${prod.imageUrl}" alt="${prod.name}" />
+                    <img src="${prod.imageUrl}" alt="${prod.name}" onclick="showProductModal(${prod.id})" />
                     <div style="flex-grow: 1;">
-                        <div style="font-weight: 600; font-size: 0.85rem;">${prod.name}</div>
-                        <div style="color: var(--accent); font-weight: 700; font-size: 0.8rem;">${prod.formattedPrice}</div>
+                        <div style="font-weight: 600; font-size: 0.82rem;">${prod.name}</div>
+                        <div style="color: var(--ink-muted); font-weight: 600; font-size: 0.78rem;">${prod.formattedPrice}</div>
                     </div>
-                    <button class="btn-add-cart" style="padding: 4px 8px; font-size: 0.75rem;" onclick="addToCart(${prod.id})">+ Giỏ</button>
+                    <button class="msg-card-btn" onclick="addToCart(${prod.id})">+ Giỏ</button>
                 </div>
             `;
         }
     }
 
-    // Clean tag from display text
     const cleanText = text.replace(regex, '').trim();
 
     row.innerHTML = `
