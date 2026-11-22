@@ -22,19 +22,40 @@ app.UseRouting();
 app.UseAuthorization();
 
 // Minimal API endpoints for Chat & Cart AJAX
-app.MapPost("/api/chat", async (ChatRequest req, OllamaService ollama) =>
+app.MapPost("/api/chat", async (ChatRequest req, OllamaService ollama, ILogger<Program> logger, CancellationToken ct) =>
 {
     if (string.IsNullOrWhiteSpace(req.Message))
         return Results.BadRequest(new { error = "Tin nhắn không được để trống." });
 
     try
     {
-        string reply = await ollama.SendMessageAsync(req.Message);
+        string reply = await ollama.SendMessageAsync(req.Message, ct);
         return Results.Ok(new { reply });
+    }
+    catch (OperationCanceledException) when (ct.IsCancellationRequested)
+    {
+        return Results.StatusCode(499);
+    }
+    catch (TaskCanceledException ex)
+    {
+        logger.LogWarning(ex, "Ollama AI request timed out.");
+        return Results.Json(
+            new { error = "AI phản hồi quá lâu (hết thời gian chờ). Bạn vui lòng thử gửi lại câu hỏi ngắn gọn hơn nhé!" },
+            statusCode: StatusCodes.Status504GatewayTimeout);
+    }
+    catch (HttpRequestException ex)
+    {
+        logger.LogWarning(ex, "Cannot connect to Ollama AI service.");
+        return Results.Json(
+            new { error = "Không thể kết nối tới Ollama AI (localhost:11434). Hãy kiểm tra Ollama đang chạy và đã tải model qwen2.5:3b." },
+            statusCode: StatusCodes.Status503ServiceUnavailable);
     }
     catch (Exception ex)
     {
-        return Results.Json(new { error = $"Không thể kết nối Ollama AI (localhost:11434): {ex.Message}" }, statusCode: 503);
+        logger.LogError(ex, "Unexpected error while calling Ollama AI.");
+        return Results.Json(
+            new { error = "Đã xảy ra lỗi khi xử lý câu hỏi. Vui lòng thử lại sau giây lát." },
+            statusCode: StatusCodes.Status500InternalServerError);
     }
 });
 

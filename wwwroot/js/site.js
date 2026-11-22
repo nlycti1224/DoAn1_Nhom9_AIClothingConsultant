@@ -311,25 +311,40 @@ async function sendChatMessage() {
     if (typing) typing.style.display = 'block';
     scrollChatToBottom();
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 95000);
+
     try {
         const res = await fetch('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message })
+            body: JSON.stringify({ message }),
+            signal: controller.signal
         });
 
-        const data = await res.json();
+        let data = {};
+        try {
+            data = await res.json();
+        } catch {
+            data = {};
+        }
+
         if (typing) typing.style.display = 'none';
 
         if (res.ok && data.reply) {
             appendMessage('bot', data.reply);
         } else {
-            appendMessage('bot', data.error || "Xin lỗi, đã xảy ra lỗi khi kết nối với AI.");
+            appendMessage('bot', data.error || "Xin lỗi, AI tạm thời không phản hồi. Bạn vui lòng thử lại sau nhé.");
         }
     } catch (err) {
         if (typing) typing.style.display = 'none';
-        appendMessage('bot', `Lỗi kết nối: ${err.message}. Hãy đảm bảo Ollama đang chạy trên máy.`);
+        if (err.name === 'AbortError') {
+            appendMessage('bot', "AI đang phản hồi quá lâu (hết thời gian chờ). Bạn vui lòng thử gửi lại câu hỏi ngắn gọn hơn nhé!");
+        } else {
+            appendMessage('bot', "Không thể kết nối tới máy chủ web. Hãy đảm bảo ứng dụng đang chạy rồi thử lại.");
+        }
     } finally {
+        clearTimeout(timeoutId);
         input.disabled = false;
         input.focus();
         scrollChatToBottom();

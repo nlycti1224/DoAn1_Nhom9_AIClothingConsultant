@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace AIClothingConsultant.Web.Services
 {
@@ -11,14 +13,21 @@ namespace AIClothingConsultant.Web.Services
     {
         private readonly HttpClient _httpClient;
         private readonly ProductService _productService;
+        private readonly string _model;
         private readonly List<object> _messages = new();
 
-        public OllamaService(HttpClient httpClient, ProductService productService)
+        public OllamaService(HttpClient httpClient, ProductService productService, IConfiguration configuration)
         {
             _httpClient = httpClient;
             _productService = productService;
-            _httpClient.BaseAddress = new Uri("http://localhost:11434/");
-            _httpClient.Timeout = TimeSpan.FromMinutes(3);
+
+            string baseUrl = configuration["Ollama:BaseUrl"] ?? "http://localhost:11434/";
+            if (!baseUrl.EndsWith('/')) baseUrl += "/";
+            _model = configuration["Ollama:Model"] ?? "qwen2.5:3b";
+            int timeoutSeconds = int.TryParse(configuration["Ollama:TimeoutSeconds"], out int sec) && sec > 0 ? sec : 90;
+
+            _httpClient.BaseAddress = new Uri(baseUrl);
+            _httpClient.Timeout = TimeSpan.FromSeconds(timeoutSeconds);
 
             ResetSystemPrompt();
         }
@@ -56,7 +65,7 @@ namespace AIClothingConsultant.Web.Services
             });
         }
 
-        public async Task<string> SendMessageAsync(string message)
+        public async Task<string> SendMessageAsync(string message, CancellationToken cancellationToken = default)
         {
             _messages.Add(new
             {
@@ -66,7 +75,7 @@ namespace AIClothingConsultant.Web.Services
 
             var request = new
             {
-                model = "qwen2.5:3b",
+                model = _model,
                 messages = _messages,
                 stream = false
             };
@@ -82,20 +91,23 @@ namespace AIClothingConsultant.Web.Services
             try
             {
                 using HttpResponseMessage response =
-                    await _httpClient.PostAsync("api/chat", content);
+                    await _httpClient.PostAsync("api/chat", content, cancellationToken);
 
                 response.EnsureSuccessStatusCode();
 
                 string result =
-                    await response.Content.ReadAsStringAsync();
+                    await response.Content.ReadAsStringAsync(cancellationToken);
 
                 using JsonDocument document =
                     JsonDocument.Parse(result);
 
-                string answer = document.RootElement
-                    .GetProperty("message")
-                    .GetProperty("content")
-                    .GetString() ?? "";
+                if (!document.RootElement.TryGetProperty("message", out var msgEl) ||
+                    !msgEl.TryGetProperty("content", out var contentEl))
+                {
+                    throw new InvalidOperationException("Phản hồi từ Ollama không đúng định dạng mong đợi.");
+                }
+
+                string answer = contentEl.GetString() ?? "";
 
                 _messages.Add(new
                 {
@@ -107,7 +119,8 @@ namespace AIClothingConsultant.Web.Services
             }
             catch
             {
-                _messages.RemoveAt(_messages.Count - 1);
+                if (_messages.Count > 0)
+                    _messages.RemoveAt(_messages.Count - 1);
                 throw;
             }
         }
