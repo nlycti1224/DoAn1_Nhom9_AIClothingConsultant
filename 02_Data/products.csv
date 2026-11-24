@@ -1,0 +1,61 @@
+﻿Id,Name,Category,Price,Size,Color,Description,ImageUrl
+SP001,Áo thun basic,Áo,199000,S,Trắng,"Áo thun cotton kiểu basic, thoáng mát, dễ phối đồ, màu trắng",https://example.com/images/SP001.jpg
+SP002,Áo sơ mi Oxford,Áo,339000,L,Xanh nhạt,"Áo sơ mi tay dài chất liệu Oxford đứng form, lịch sự, màu xanh nhạt",https://example.com/images/SP002.jpg
+SP003,Áo polo,Áo,279000,XL,Xám,"Áo polo cổ bẻ vải pique co giãn nhẹ, năng động, màu xám",https://example.com/images/SP003.jpg
+SP004,Áo hoodie nỉ,Áo,509000,M,Đen,"Áo hoodie nỉ bông có mũ giữ ấm, phom thoải mái, màu đen",https://example.com/images/SP004.jpg
+SP005,Áo sweater nỉ,Áo,389000,S,Kem,"Áo sweater cổ tròn vải nỉ mềm mại, trẻ trung, màu kem",https://example.com/images/SP005.jpg
+SP006,Áo croptop gân,Áo,189000,L,Trắng,"Áo croptop dệt gân ôm nhẹ, tôn dáng hiện đại, màu trắng",https://example.com/images/SP006.jpg
+SP007,Quần jeans slim,Quần,439000,M,Xanh denim,"Quần jeans dáng slim fit co giãn nhẹ, dễ mặc, màu xanh denim",https://example.com/images/SP007.jpg
+SP008,Quần kaki straight,Quần,389000,L,Be,"Quần kaki dáng suông đứng phom, phù hợp đi học và đi làm, màu be",https://example.com/images/SP008.jpg
+SP009,Quần short linen,Quần,309000,S,Kem,"Quần short linen thoáng mát, nhẹ nhàng cho ngày nắng, màu kem",https://example.com/images/SP009.jpg
+SP010,Quần âu ống đứng,Quần,449000,M,Đen,"Quần âu ống đứng vải ít nhăn, thanh lịch, màu đen",https://example.com/images/SP010.jpg
+SP011,Quần jogger nỉ,Quần,329000,L,Đen,"Quần jogger bo gấu vải nỉ êm ái, năng động, màu đen",https://example.com/images/SP011.jpg
+SP012,Váy midi hoa,Váy,465000,L,Hoa nhí,"Váy midi họa tiết hoa nhí nữ tính, bay bổng, màu hoa nhí",https://example.com/images/SP012.jpg
+SP013,Chân váy chữ A,Váy,289000,S,Đen,"Chân váy chữ A dài trên gối, gọn gàng và dễ phối áo, màu đen",https://example.com/images/SP013.jpg
+SP014,Đầm suông linen,Váy,459000,M,Kem,"Đầm suông chất liệu linen mát mẻ, thoải mái cả ngày, màu kem",https://example.com/images/SP014.jpg
+SP015,Chân váy xếp ly,Váy,379000,L,Đen,"Chân váy xếp ly dáng dài nhẹ nhàng, thanh thoát, màu đen",https://example.com/images/SP015.jpg
+SP016,Áo khoác denim,Áo khoác,579000,M,Xanh denim,"Áo khoác denim dáng rộng cá tính, dễ khoác ngoài, màu xanh denim",https://example.com/images/SP016.jpg
+SP017,Áo khoác gió,Áo khoác,429000,L,Đen,"Áo khoác gió cản gió nhẹ, tiện lợi khi di chuyển, màu đen",https://example.com/images/SP017.jpg
+SP018,Áo blazer dáng suông,Áo khoác,699000,L,Be,"Áo blazer dáng suông thanh lịch, phù hợp phối nhiều trang phục, màu be",https://example.com/images/SP018.jpg
+SP019,Áo thun basic cổ điển,Áo,239000,XL,Đen,"Áo thun cotton kiểu basic, thoáng mát, dễ phối đồ, màu đen",https://example.com/images/SP019.jpg
+SP020,Áo sơ mi Oxford cổ điển,Áo,329000,XL,Trắng,"Áo sơ mi tay dài chất liệu Oxford đứng form, lịch sự, màu trắng",https://example.com/images/SP020.jpg
+SP021,Áo polo cổ điển,Áo,269000,M,Đen,"Áo polo cổ bẻ vải pique co giãn nhẹ, năng động, màu đen",https://example.com/images/SP021.jpg
+SP022,Áo hoodie nỉ cổ điển,Áo,519000,L,Xám,"Áo hoodie nỉ bông có mũ giữ ấm, phom thoải mái, màu xám",https://example.com/images/SP022.jpg
+SP023,Áo sweater nỉ cổ điển,Áo,399000,XL,Xanh navy,"Áo sweater cổ tròn vải nỉ mềm mại, trẻ trung, màu xanh navy",https://example.com/images/SP023.jpg
+SP024,Áo croptop gân cổ điển,Áo,229000,S,Đen,"Áo croptop dệt gân ôm nhẹ, tôn dáng hiện đại, màu đen",https://example.com/images/SP024.jpg
+SP025,Quần jeans slim cổ điển,Quần,449000,M,Xanh đậm,"Quần jeans dáng slim fit co giãn nhẹ, dễ mặc, màu xanh đậm",https://example.com/images/SP025.jpg
+SP026,Quần kaki straight cổ điển,Quần,399000,M,Đen,"Quần kaki dáng suông đứng phom, phù hợp đi học và đi làm, màu đen",https://example.com/images/SP026.jpg
+SP027,Quần short linen cổ điển,Quần,299000,XL,Be,"Quần short linen thoáng mát, nhẹ nhàng cho ngày nắng, màu be",https://example.com/images/SP027.jpg
+SP028,Quần âu ống đứng cổ điển,Quần,459000,M,Xám đậm,"Quần âu ống đứng vải ít nhăn, thanh lịch, màu xám đậm",https://example.com/images/SP028.jpg
+SP029,Quần jogger nỉ cổ điển,Quần,369000,XL,Xám,"Quần jogger bo gấu vải nỉ êm ái, năng động, màu xám",https://example.com/images/SP029.jpg
+SP030,Váy midi hoa cổ điển,Váy,415000,S,Xanh hoa,"Váy midi họa tiết hoa nhí nữ tính, bay bổng, màu xanh hoa",https://example.com/images/SP030.jpg
+SP031,Chân váy chữ A cổ điển,Váy,279000,M,Be,"Chân váy chữ A dài trên gối, gọn gàng và dễ phối áo, màu be",https://example.com/images/SP031.jpg
+SP032,Đầm suông linen cổ điển,Váy,469000,L,Be,"Đầm suông chất liệu linen mát mẻ, thoải mái cả ngày, màu be",https://example.com/images/SP032.jpg
+SP033,Chân váy xếp ly cổ điển,Váy,369000,S,Kem,"Chân váy xếp ly dáng dài nhẹ nhàng, thanh thoát, màu kem",https://example.com/images/SP033.jpg
+SP034,Áo khoác denim cổ điển,Áo khoác,629000,L,Xanh nhạt,"Áo khoác denim dáng rộng cá tính, dễ khoác ngoài, màu xanh nhạt",https://example.com/images/SP034.jpg
+SP035,Áo khoác gió cổ điển,Áo khoác,439000,XL,Xanh navy,"Áo khoác gió cản gió nhẹ, tiện lợi khi di chuyển, màu xanh navy",https://example.com/images/SP035.jpg
+SP036,Áo blazer dáng suông cổ điển,Áo khoác,649000,S,Đen,"Áo blazer dáng suông thanh lịch, phù hợp phối nhiều trang phục, màu đen",https://example.com/images/SP036.jpg
+SP037,Áo thun basic phối màu,Áo,229000,L,Xám,"Áo thun cotton kiểu basic, thoáng mát, dễ phối đồ, màu xám",https://example.com/images/SP037.jpg
+SP038,Áo sơ mi Oxford phối màu,Áo,369000,M,Be,"Áo sơ mi tay dài chất liệu Oxford đứng form, lịch sự, màu be",https://example.com/images/SP038.jpg
+SP039,Áo polo phối màu,Áo,259000,L,Trắng,"Áo polo cổ bẻ vải pique co giãn nhẹ, năng động, màu trắng",https://example.com/images/SP039.jpg
+SP040,Áo hoodie nỉ phối màu,Áo,529000,XL,Be,"Áo hoodie nỉ bông có mũ giữ ấm, phom thoải mái, màu be",https://example.com/images/SP040.jpg
+SP041,Áo sweater nỉ phối màu,Áo,349000,L,Đen,"Áo sweater cổ tròn vải nỉ mềm mại, trẻ trung, màu đen",https://example.com/images/SP041.jpg
+SP042,Áo croptop gân phối màu,Áo,219000,M,Hồng phấn,"Áo croptop dệt gân ôm nhẹ, tôn dáng hiện đại, màu hồng phấn",https://example.com/images/SP042.jpg
+SP043,Quần jeans slim phối màu,Quần,459000,S,Đen,"Quần jeans dáng slim fit co giãn nhẹ, dễ mặc, màu đen",https://example.com/images/SP043.jpg
+SP044,Quần kaki straight phối màu,Quần,409000,M,Xanh rêu,"Quần kaki dáng suông đứng phom, phù hợp đi học và đi làm, màu xanh rêu",https://example.com/images/SP044.jpg
+SP045,Quần short linen phối màu,Quần,289000,L,Xanh nhạt,"Quần short linen thoáng mát, nhẹ nhàng cho ngày nắng, màu xanh nhạt",https://example.com/images/SP045.jpg
+SP046,Quần âu ống đứng phối màu,Quần,469000,L,Xanh navy,"Quần âu ống đứng vải ít nhăn, thanh lịch, màu xanh navy",https://example.com/images/SP046.jpg
+SP047,Quần jogger nỉ phối màu,Quần,359000,M,Xanh navy,"Quần jogger bo gấu vải nỉ êm ái, năng động, màu xanh navy",https://example.com/images/SP047.jpg
+SP048,Váy midi hoa phối màu,Váy,425000,M,Kem hoa,"Váy midi họa tiết hoa nhí nữ tính, bay bổng, màu kem hoa",https://example.com/images/SP048.jpg
+SP049,Chân váy chữ A phối màu,Váy,269000,L,Nâu,"Chân váy chữ A dài trên gối, gọn gàng và dễ phối áo, màu nâu",https://example.com/images/SP049.jpg
+SP050,Đầm suông linen phối màu,Váy,479000,S,Xanh olive,"Đầm suông chất liệu linen mát mẻ, thoải mái cả ngày, màu xanh olive",https://example.com/images/SP050.jpg
+SP051,Chân váy xếp ly phối màu,Váy,359000,M,Nâu nhạt,"Chân váy xếp ly dáng dài nhẹ nhàng, thanh thoát, màu nâu nhạt",https://example.com/images/SP051.jpg
+SP052,Áo khoác denim phối màu,Áo khoác,609000,XL,Đen,"Áo khoác denim dáng rộng cá tính, dễ khoác ngoài, màu đen",https://example.com/images/SP052.jpg
+SP053,Áo khoác gió phối màu,Áo khoác,389000,M,Xám,"Áo khoác gió cản gió nhẹ, tiện lợi khi di chuyển, màu xám",https://example.com/images/SP053.jpg
+SP054,Áo blazer dáng suông phối màu,Áo khoác,659000,M,Nâu,"Áo blazer dáng suông thanh lịch, phù hợp phối nhiều trang phục, màu nâu",https://example.com/images/SP054.jpg
+SP055,Áo thun basic bản 4,Áo,219000,M,Be,"Áo thun cotton kiểu basic, thoáng mát, dễ phối đồ, màu be",https://example.com/images/SP055.jpg
+SP056,Áo sơ mi Oxford bản 4,Áo,359000,L,Xanh đậm,"Áo sơ mi tay dài chất liệu Oxford đứng form, lịch sự, màu xanh đậm",https://example.com/images/SP056.jpg
+SP057,Áo polo bản 4,Áo,299000,XL,Xanh rêu,"Áo polo cổ bẻ vải pique co giãn nhẹ, năng động, màu xanh rêu",https://example.com/images/SP057.jpg
+SP058,Áo hoodie nỉ bản 4,Áo,479000,M,Nâu,"Áo hoodie nỉ bông có mũ giữ ấm, phom thoải mái, màu nâu",https://example.com/images/SP058.jpg
+SP059,Áo sweater nỉ bản 4,Áo,359000,M,Xám,"Áo sweater cổ tròn vải nỉ mềm mại, trẻ trung, màu xám",https://example.com/images/SP059.jpg
+SP060,Áo croptop gân bản 4,Áo,209000,L,Be,"Áo croptop dệt gân ôm nhẹ, tôn dáng hiện đại, màu be",https://example.com/images/SP060.jpg
