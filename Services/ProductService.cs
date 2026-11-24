@@ -1,115 +1,117 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+using Microsoft.Data.SqlClient;
 using AIClothingConsultant.Web.Models;
 
-namespace AIClothingConsultant.Web.Services
+namespace AIClothingConsultant.Web.Services;
+
+public class ProductService
 {
-    public class ProductService
+    private readonly string _connStr;
+
+    public ProductService(IConfiguration config)
     {
-        private readonly List<Product> _products = new();
+        _connStr = config.GetConnectionString("DefaultConnection")
+            ?? throw new InvalidOperationException(
+                "Missing ConnectionStrings:DefaultConnection in appsettings.Development.json");
+    }
 
-        public ProductService()
-        {
-            SeedProducts();
-        }
+    // === Method Ly đã dùng sẵn trong Index.cshtml.cs / OllamaService.cs / Program.cs ===
+    public List<Product> GetAllProducts()
+        => GetAllProductsAsync().GetAwaiter().GetResult();
 
-        private void SeedProducts()
+    public async Task<List<Product>> GetAllProductsAsync()
+    {
+        const string sql = @"
+            SELECT p.Id, p.Name, c.CategoryName AS Category, p.Price,
+                   p.Size, p.Color, p.Description, p.ImageUrl
+            FROM dbo.Products p
+            JOIN dbo.Categories c ON c.CategoryId = p.CategoryId
+            ORDER BY p.Id;";
+
+        await using var conn = new SqlConnection(_connStr);
+        await using var cmd  = new SqlCommand(sql, conn);
+        return await ReadAllAsync(cmd);
+    }
+
+    // (1) Lọc theo danh mục + giá tối đa
+    public async Task<List<Product>> FilterByCategoryAsync(string category, int maxPrice)
+    {
+        const string sql = @"
+            SELECT p.Id, p.Name, c.CategoryName AS Category, p.Price,
+                   p.Size, p.Color, p.Description, p.ImageUrl
+            FROM dbo.Products p
+            JOIN dbo.Categories c ON c.CategoryId = p.CategoryId
+            WHERE c.CategoryName = @Cat AND p.Price <= @MaxPrice
+            ORDER BY p.Price;";
+
+        await using var conn = new SqlConnection(_connStr);
+        await using var cmd  = new SqlCommand(sql, conn);
+        cmd.Parameters.AddWithValue("@Cat",      category);
+        cmd.Parameters.AddWithValue("@MaxPrice", maxPrice);
+        return await ReadAllAsync(cmd);
+    }
+
+    // (2) Lọc theo màu + size
+    public async Task<List<Product>> FilterByColorSizeAsync(string color, string size)
+    {
+        const string sql = @"
+            SELECT p.Id, p.Name, c.CategoryName AS Category, p.Price,
+                   p.Size, p.Color, p.Description, p.ImageUrl
+            FROM dbo.Products p
+            JOIN dbo.Categories c ON c.CategoryId = p.CategoryId
+            WHERE p.Color = @Color AND p.Size = @Size;";
+
+        await using var conn = new SqlConnection(_connStr);
+        await using var cmd  = new SqlCommand(sql, conn);
+        cmd.Parameters.AddWithValue("@Color", color);
+        cmd.Parameters.AddWithValue("@Size",  size);
+        return await ReadAllAsync(cmd);
+    }
+
+    // (3) Kết hợp nhiều tiêu chí, NULL = bỏ qua
+    public async Task<List<Product>> SearchAsync(
+        string? category, string? color, string? size, int? maxPrice)
+    {
+        const string sql = @"
+            SELECT p.Id, p.Name, c.CategoryName AS Category, p.Price,
+                   p.Size, p.Color, p.Description, p.ImageUrl
+            FROM dbo.Products p
+            JOIN dbo.Categories c ON c.CategoryId = p.CategoryId
+            WHERE (@Cat      IS NULL OR c.CategoryName = @Cat)
+              AND (@Color    IS NULL OR p.Color        = @Color)
+              AND (@Size     IS NULL OR p.Size         = @Size)
+              AND (@MaxPrice IS NULL OR p.Price       <= @MaxPrice)
+            ORDER BY p.Price ASC;";
+
+        await using var conn = new SqlConnection(_connStr);
+        await using var cmd  = new SqlCommand(sql, conn);
+        cmd.Parameters.Add("@Cat",      System.Data.SqlDbType.NVarChar, 100).Value = (object?)category ?? DBNull.Value;
+        cmd.Parameters.Add("@Color",    System.Data.SqlDbType.NVarChar, 50 ).Value = (object?)color    ?? DBNull.Value;
+        cmd.Parameters.Add("@Size",     System.Data.SqlDbType.NVarChar, 10 ).Value = (object?)size     ?? DBNull.Value;
+        cmd.Parameters.Add("@MaxPrice", System.Data.SqlDbType.Int          ).Value = (object?)maxPrice ?? DBNull.Value;
+        return await ReadAllAsync(cmd);
+    }
+
+    // === Helper map SqlDataReader → Product (khớp model thật của Ly) ===
+    private static async Task<List<Product>> ReadAllAsync(SqlCommand cmd)
+    {
+        var list = new List<Product>();
+        await cmd.Connection!.OpenAsync();
+        await using var rd = await cmd.ExecuteReaderAsync();
+        while (await rd.ReadAsync())
         {
-            _products.AddRange(new[]
+            list.Add(new Product
             {
-                new Product
-                {
-                    Id = 1,
-                    Name = "Đầm Voan Tơ Xếp Bèo Tím Pastel",
-                    Category = "Đầm",
-                    Price = 420000,
-                    ThumbColor = "#F5EEFC",
-                    Icon = "",
-                    ImageFileName = "prod_1.jpg",
-                    Description = "Đầm voan tơ xếp bèo tầng tông tím lavender pastel dịu dàng, đính nơ cổ tinh tế cho nàng Gen Z đi café, chụp ảnh và dự tiệc nhẹ."
-                },
-                new Product
-                {
-                    Id = 2,
-                    Name = "Áo Cardigan Len Dệt Kim Cúc Ngọc Trai",
-                    Category = "Áo khoác",
-                    Price = 350000,
-                    ThumbColor = "#F7F1FC",
-                    Icon = "",
-                    ImageFileName = "prod_2.jpg",
-                    Description = "Áo cardigan len dệt kim dáng lửng đính cúc ngọc trai phong cách Hàn Quốc, dễ khoác ngoài váy liền hoặc chân váy xếp ly."
-                },
-                new Product
-                {
-                    Id = 3,
-                    Name = "Đầm Babydoll Tím Pastel Tay Bồng",
-                    Category = "Đầm",
-                    Price = 360000,
-                    ThumbColor = "#F5EEFC",
-                    Icon = "",
-                    ImageFileName = "prod_3.jpg",
-                    Description = "Đầm babydoll ngắn tông tím lavender pastel tay bồng nhẹ nhàng, chất vải mềm mát chuẩn phong cách nàng thơ Gen Z 16–24 tuổi."
-                },
-                new Product
-                {
-                    Id = 4,
-                    Name = "Chân Váy Ngắn Xếp Ly Cạp Cao",
-                    Category = "Chân váy",
-                    Price = 245000,
-                    ThumbColor = "#F3ECF8",
-                    Icon = "",
-                    ImageFileName = "prod_4.jpg",
-                    Description = "Chân váy ngắn xếp ly cạp cao màu tím than khói có quần bảo hộ bên trong, hack chân siêu dài khi phối cùng baby tee hoặc áo sơ mi."
-                },
-                new Product
-                {
-                    Id = 5,
-                    Name = "Đầm Nhung Tím Than Dự Tiệc Cổ Tim",
-                    Category = "Đầm",
-                    Price = 520000,
-                    ThumbColor = "#EFE7F7",
-                    Icon = "",
-                    ImageFileName = "prod_5.jpg",
-                    Description = "Đầm nhung tím than cổ tim viền ren tinh tế, chiết eo tôn dáng sang trọng cho nàng 20–26 tuổi đi tiệc tối và hẹn hò."
-                },
-                new Product
-                {
-                    Id = 6,
-                    Name = "Áo Khoác Cardigan Len Tím Môn Phom Rộng",
-                    Category = "Áo khoác",
-                    Price = 340000,
-                    ThumbColor = "#F6F0FC",
-                    Icon = "",
-                    ImageFileName = "prod_6.jpg",
-                    Description = "Áo khoác cardigan len mềm phom rộng màu tím môn pastel nhẹ nhàng, khoác ngoài áo hai dây hay váy liền đều cực xinh và trẻ trung."
-                },
-                new Product
-                {
-                    Id = 7,
-                    Name = "Quần Ống Suông Cạp Cao Thanh Lịch",
-                    Category = "Quần",
-                    Price = 340000,
-                    ThumbColor = "#F3ECF8",
-                    Icon = "",
-                    ImageFileName = "prod_7.jpg",
-                    Description = "Quần ống suông cạp cao tông tím khói trầm trẻ trung, chất vải đứng phom ít nhăn giúp kéo dài đôi chân khi đi học hay đi làm."
-                },
-                new Product
-                {
-                    Id = 8,
-                    Name = "Áo Khoác Tweed Tím Nhạt Dáng Ngắn",
-                    Category = "Áo khoác",
-                    Price = 580000,
-                    ThumbColor = "#F5EEFB",
-                    Icon = "",
-                    ImageFileName = "prod_8.jpg",
-                    Description = "Áo khoác dạ tweed cổ tròn dáng ngắn phối cúc ngọc trai tông tím pastel ngọt ngào chuẩn phong cách tiểu thư Gen Z."
-                }
+                Id          = rd.GetInt32(rd.GetOrdinal("Id")),
+                Name        = rd.GetString(rd.GetOrdinal("Name")),
+                Category    = rd.GetString(rd.GetOrdinal("Category")),
+                Price       = rd.GetInt32(rd.GetOrdinal("Price")),                                       // ← int, không phải decimal
+                Size        = rd.IsDBNull(rd.GetOrdinal("Size"))  ? "" : rd.GetString(rd.GetOrdinal("Size")),
+                Color       = rd.IsDBNull(rd.GetOrdinal("Color")) ? "" : rd.GetString(rd.GetOrdinal("Color")),
+                Description = rd.IsDBNull(rd.GetOrdinal("Description")) ? "" : rd.GetString(rd.GetOrdinal("Description")),
+                // ImageUrl là computed từ ImageFileName — không map ở đây
+                // ImageFileName để mặc định "" → ImageUrl trả về "" (fine cho Q-10 test)
             });
         }
-
-        public IReadOnlyList<Product> GetAllProducts() => _products;
-
-        public Product? GetProductById(int id) => _products.FirstOrDefault(p => p.Id == id);
+        return list;
     }
 }

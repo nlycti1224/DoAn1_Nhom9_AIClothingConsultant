@@ -4,7 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddSingleton<ProductService>();
+builder.Services.AddScoped<ProductService>();
 builder.Services.AddHttpClient<OllamaService>();
 
 var app = builder.Build();
@@ -71,6 +71,16 @@ app.MapGet("/api/products", (ProductService products) =>
 });
 
 app.MapRazorPages();
+
+// === 3 endpoint test cho Q-10 — giữ để test, xóa trước khi commit nếu muốn ===
+app.MapGet("/test/filter", async (ProductService svc) =>
+    await svc.FilterByCategoryAsync("Váy", 500000));
+
+app.MapGet("/test/color-size", async (ProductService svc) =>
+    await svc.FilterByColorSizeAsync("Be", "M"));
+
+app.MapGet("/test/search", async (ProductService svc) =>
+    await svc.SearchAsync("Áo", null, "M", 400000));
 
 app.Run();
 

@@ -11,6 +11,8 @@ namespace AIClothingConsultant.Web.Models
         public string ImageFileName { get; set; } = "";
         public string Description { get; set; } = "";
         public bool IsWishlisted { get; set; } = false;
+        public string Size  { get; set; } = "";
+        public string Color { get; set; } = "";
 
         public string FormattedPrice => $"{Price:N0} ₫";
         public string ImageUrl => string.IsNullOrEmpty(ImageFileName) ? "" : $"/images/{ImageFileName}";
