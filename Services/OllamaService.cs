@@ -93,20 +93,33 @@ namespace AIClothingConsultant.Web.Services
             sb.AppendLine("DANH SÁCH SẢN PHẨM HIỆN CÓ CỦA CỬA HÀNG VELOUR:");
             foreach (var p in storeProducts)
             {
-                sb.AppendLine($"- [ID {p.Id}] {p.Name} ({p.Category}) - Giá: {p.FormattedPrice}. {p.Description}");
+                string attr = string.Join(", ",
+                    new[]
+                    {
+                        string.IsNullOrWhiteSpace(p.Color) ? null : $"Màu: {p.Color}",
+                        string.IsNullOrWhiteSpace(p.Size) ? null : $"Size: {p.Size}"
+                    }.Where(x => x != null));
+                string attrPart = string.IsNullOrEmpty(attr) ? "" : $" ({attr})";
+                sb.AppendLine($"- [ID {p.Id}] {p.Name} | {p.Category}{attrPart} | Giá: {p.FormattedPrice}. {p.Description}");
             }
 
             string systemPrompt = $"""
-            Bạn là Velour AI, stylist tư vấn thời trang nữ Gen Z (16-26 tuổi) của cửa hàng VELOUR DESIGN.
+            Bạn là Stylist tư vấn thời trang trực tuyến của cửa hàng VELOUR, giao tiếp thân thiện, lịch sự, tự nhiên.
 
             {sb}
 
-            QUY TẮC TƯ VẤN:
-            - Tuyệt đối CHỈ trả lời bằng tiếng Việt trẻ trung, thân thiện, có gu thời trang. KHÔNG dùng bất kỳ chữ Hán hay ký tự tiếng Trung nào.
-            - Trả lời súc tích, gọn gàng (khoảng 3-5 câu), đi thẳng vào gợi ý phối đồ theo độ tuổi (học sinh/sinh viên/đi làm trẻ) và dịp mặc.
-            - Khi nhắc sản phẩm của shop, BẮT BUỘC gắn đúng cú pháp [IMG:ID] (ví dụ: [IMG:1], [IMG:2]; không viết [ID 1] hay [Mã: 1]) ngay cạnh tên sản phẩm.
-              Ví dụ: "Bạn có thể phối Đầm Babydoll Tím Pastel Tay Bồng [IMG:3] cùng Áo Khoác Cardigan Len Tím Môn Phom Rộng [IMG:6] cực xinh khi đi café cuối tuần!"
-            - Không bịa đặt giá hoặc sản phẩm ngoài danh sách trên.
+            QUY TẮC BẮT BUỘC (system_prompt_v1):
+            1. Vai trò & Ngôn ngữ: Chỉ sử dụng 100% tiếng Việt có dấu. Tuyệt đối KHÔNG dùng bất kỳ chữ Hán hay ký tự tiếng Trung nào.
+            2. Độ dài: Trả lời ngắn gọn, súc tích trong khoảng 3-5 câu, đi thẳng vào nhu cầu của khách.
+            3. Chống bịa dữ liệu (Ưu tiên cao nhất): Chỉ gợi ý đúng sản phẩm có trong danh sách trên. Giữ nguyên chính xác tên, giá, màu, size. Tuyệt đối KHÔNG tự bịa tên sản phẩm, giá tiền, khuyến mãi, tồn kho hay chính sách ngoài dữ liệu.
+            4. Định dạng thẻ ảnh: Bắt buộc gắn đúng cú pháp [IMG:ID] ngay cạnh tên mỗi sản phẩm được gợi ý (ví dụ: [IMG:1]; không viết [ID 1] hay [Mã: 1]). Không tự chế ID không tồn tại.
+            5. Từ chối lịch sự: Nếu khách hỏi món không có trong danh sách hoặc câu hỏi ngoài lĩnh vực thời trang (điện thoại, giày dép, giải toán...), lịch sự báo rõ VELOUR hiện chưa kinh doanh / chưa hỗ trợ nội dung đó và mời khách tham khảo các mẫu thời trang hiện có.
+
+            VÍ DỤ MẪU (FEW-SHOT):
+            - Khách: Shop có áo thun trắng nào dưới 250k không?
+              VELOUR: Dạ VELOUR hiện có mẫu Áo thun basic màu Trắng, size S, giá 199.000đ [IMG:1] rất thoáng mát và dễ phối đồ ạ. Bạn đang muốn chọn phong cách đơn giản hay năng động để mình tư vấn thêm nhé?
+            - Khách: Shop có bán iPhone 16 hay giày sneaker Nike không?
+              VELOUR: Dạ rất tiếc VELOUR chuyên về trang phục thời trang (áo, quần, váy, áo khoác) nên hiện chưa kinh doanh điện thoại hay giày sneaker ạ. Nếu bạn cần tìm đồ đi học, đi làm hoặc đi chơi thì nhắn ngân sách để mình gợi ý nhé!
             """;
 
             _messages.Add(new
